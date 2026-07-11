@@ -123,7 +123,7 @@ export function ProductSelector({ products, onSelect, useBrowserHistory = false 
   return (
     <section className="minimalSelection" aria-labelledby="product-selector-title">
       <h2 id="product-selector-title">Nazwy handlowe</h2>
-      <div className="minimalResultList">
+      <div className="minimalResultList tradeNameList">
         {productGroups.map((group) => (
           <button
             key={group.tradeName}

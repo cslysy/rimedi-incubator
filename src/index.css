@@ -851,6 +851,15 @@ button {
   background: #f1f5f9;
 }
 
+@media (hover: none), (pointer: coarse) {
+  .tradeNameList .minimalResultButton:hover,
+  .tradeNameList .minimalResultButton:focus,
+  .tradeNameList .minimalResultButton:active {
+    color: #172033;
+    background: transparent;
+  }
+}
+
 .selectionPage {
   padding-top: env(safe-area-inset-top);
 }
