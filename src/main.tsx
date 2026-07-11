@@ -27,19 +27,23 @@ interface AvailabilityScreenProps {
 }
 
 function AvailabilityScreen({ checking = false }: AvailabilityScreenProps) {
+  if (checking) {
+    return (
+      <main className="startupSplash" aria-label="Uruchamianie Rimedi">
+        <strong className="startupLogo">Rimedi</strong>
+        <span className="startupTagline">Leki bez tajemnic</span>
+        <span className="startupLoader" aria-hidden="true" />
+      </main>
+    );
+  }
+
   return (
     <main className="availabilityScreen">
       <h1>Rimedi</h1>
-      <p>
-        {checking
-          ? "Sprawdzanie dostępności wersji testowej…"
-          : "Wersja testowa jest obecnie niedostępna."}
-      </p>
-      {!checking && (
-        <button type="button" onClick={() => window.location.reload()}>
-          Spróbuj ponownie
-        </button>
-      )}
+      <p>Wersja testowa jest obecnie niedostępna.</p>
+      <button type="button" onClick={() => window.location.reload()}>
+        Spróbuj ponownie
+      </button>
     </main>
   );
 }
