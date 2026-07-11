@@ -6,6 +6,22 @@ import "./index.css";
 const root = createRoot(document.getElementById("root") as HTMLElement);
 const requiresOnlineAvailability = import.meta.env.VITE_DISTRIBUTION !== "app-store";
 
+function updateVisualViewportPosition(): void {
+  const viewport = window.visualViewport;
+  const offsetTop = viewport?.offsetTop ?? 0;
+  const obscuredBottom = viewport
+    ? Math.max(0, window.innerHeight - viewport.offsetTop - viewport.height)
+    : 0;
+
+  document.documentElement.style.setProperty("--visual-viewport-top", `${offsetTop}px`);
+  document.documentElement.style.setProperty("--visual-viewport-bottom", `${obscuredBottom}px`);
+}
+
+updateVisualViewportPosition();
+window.visualViewport?.addEventListener("resize", updateVisualViewportPosition, { passive: true });
+window.visualViewport?.addEventListener("scroll", updateVisualViewportPosition, { passive: true });
+window.addEventListener("resize", updateVisualViewportPosition, { passive: true });
+
 interface AvailabilityScreenProps {
   checking?: boolean;
 }

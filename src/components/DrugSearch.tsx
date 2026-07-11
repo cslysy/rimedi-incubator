@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { drugRepository } from "../services/DrugRepository";
 import type { Drug } from "../types";
 
@@ -19,6 +19,16 @@ export function DrugSearch({ query, onQueryChange, onSelect }: DrugSearchProps =
   const visibleResults = results.slice(0, MAX_VISIBLE_RESULTS);
   const isSearching = trimmedQuery.length > 0;
   const hasSearchQuery = trimmedQuery.length >= 2;
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("searchModeActive", isSearching);
+    document.body.classList.toggle("searchModeActive", isSearching);
+
+    return () => {
+      document.documentElement.classList.remove("searchModeActive");
+      document.body.classList.remove("searchModeActive");
+    };
+  }, [isSearching]);
 
   function updateQuery(nextQuery: string): void {
     if (onQueryChange) {

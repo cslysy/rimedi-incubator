@@ -1,4 +1,7 @@
 :root {
+  --visual-viewport-top: 0px;
+  --visual-viewport-bottom: 0px;
+
   color: #0f172a;
   background: #ffffff;
   font-family:
@@ -17,6 +20,13 @@ body {
   min-width: 320px;
   min-height: 100vh;
   background: #ffffff;
+}
+
+html.searchModeActive,
+html.searchModeActive body {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
 }
 
 .availabilityScreen {
@@ -904,7 +914,7 @@ button {
 
   .searchActive .searchControls {
     position: fixed;
-    top: max(env(safe-area-inset-top), 40px);
+    top: calc(var(--visual-viewport-top) + max(env(safe-area-inset-top), 40px));
     right: max(16px, env(safe-area-inset-right));
     left: max(16px, env(safe-area-inset-left));
     z-index: 20;
@@ -916,9 +926,9 @@ button {
 
   .searchActive .searchResultsArea {
     position: fixed;
-    top: calc(max(env(safe-area-inset-top), 40px) + 124px);
+    top: calc(var(--visual-viewport-top) + max(env(safe-area-inset-top), 40px) + 124px);
     right: max(16px, env(safe-area-inset-right));
-    bottom: 0;
+    bottom: var(--visual-viewport-bottom);
     left: max(16px, env(safe-area-inset-left));
     overflow-y: auto;
     padding-bottom: max(24px, env(safe-area-inset-bottom));
