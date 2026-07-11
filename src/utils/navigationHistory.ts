@@ -45,6 +45,11 @@ export function scrollToTopAfterNavigation(): void {
 
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
+    document.querySelector<HTMLElement>(".selectionPage")?.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "auto"
+    });
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }
 

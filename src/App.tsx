@@ -30,6 +30,9 @@ export function App() {
   const [selectedDrug, setSelectedDrug] = useState<Drug | null>(getInitialDrug);
 
   useEffect(() => {
+    const previousScrollRestoration = window.history.scrollRestoration;
+    window.history.scrollRestoration = "manual";
+
     if (!getNavigationState()) {
       replaceNavigationState({ level: "search" });
     }
@@ -45,13 +48,27 @@ export function App() {
     }
 
     window.addEventListener("popstate", handlePopState);
-    return () => window.removeEventListener("popstate", handlePopState);
+    return () => {
+      window.history.scrollRestoration = previousScrollRestoration;
+      window.removeEventListener("popstate", handlePopState);
+    };
   }, []);
 
   useLayoutEffect(() => {
-    if (selectedDrug) {
+    const selectionModeActive = selectedDrug !== null;
+    document.documentElement.classList.toggle("selectionModeActive", selectionModeActive);
+    document.body.classList.toggle("selectionModeActive", selectionModeActive);
+
+    if (selectionModeActive) {
       scrollToTopAfterNavigation();
     }
+
+    return () => {
+      if (selectionModeActive) {
+        document.documentElement.classList.remove("selectionModeActive");
+        document.body.classList.remove("selectionModeActive");
+      }
+    };
   }, [selectedDrug]);
 
   function selectDrug(drug: Drug): void {

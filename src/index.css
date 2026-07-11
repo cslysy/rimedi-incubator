@@ -926,6 +926,23 @@ button {
 }
 
 @media (max-width: 679px) {
+  html.selectionModeActive,
+  html.selectionModeActive body {
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  .selectionPage {
+    position: fixed;
+    inset: 0;
+    height: 100dvh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
   .searchActive {
     padding-top: 0;
   }
