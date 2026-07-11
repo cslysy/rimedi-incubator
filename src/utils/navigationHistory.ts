@@ -36,6 +36,15 @@ export function scrollToTopAfterNavigation(): void {
   }
 
   function resetScroll(): void {
+    const scrollingElement = document.scrollingElement;
+
+    if (scrollingElement) {
+      scrollingElement.scrollTop = 0;
+      scrollingElement.scrollLeft = 0;
+    }
+
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }
 
@@ -44,5 +53,8 @@ export function scrollToTopAfterNavigation(): void {
     resetScroll();
     window.requestAnimationFrame(resetScroll);
   });
-  window.setTimeout(resetScroll, 250);
+
+  // Safari przywraca przesunięcie strony dopiero po schowaniu klawiatury
+  // i ponownym rozszerzeniu visual viewport.
+  [100, 300, 600].forEach((delay) => window.setTimeout(resetScroll, delay));
 }

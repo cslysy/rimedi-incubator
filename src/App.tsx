@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { DrugSearch } from "./components/DrugSearch";
 import { ProductSelector } from "./components/ProductSelector";
 import { drugRepository } from "./services/DrugRepository";
@@ -48,10 +48,15 @@ export function App() {
     return () => window.removeEventListener("popstate", handlePopState);
   }, []);
 
+  useLayoutEffect(() => {
+    if (selectedDrug) {
+      scrollToTopAfterNavigation();
+    }
+  }, [selectedDrug]);
+
   function selectDrug(drug: Drug): void {
     setSelectedDrug(drug);
     pushNavigationState({ level: "drug", drugId: drug.id });
-    scrollToTopAfterNavigation();
   }
 
   function goBack(): void {
