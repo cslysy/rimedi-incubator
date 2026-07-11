@@ -914,7 +914,7 @@ button {
 
   .searchActive .searchControls {
     position: fixed;
-    top: calc(var(--visual-viewport-top) + max(env(safe-area-inset-top), 40px));
+    top: calc(var(--visual-viewport-top) + max(env(safe-area-inset-top), 32px));
     right: max(16px, env(safe-area-inset-right));
     left: max(16px, env(safe-area-inset-left));
     z-index: 20;
@@ -926,7 +926,7 @@ button {
 
   .searchActive .searchResultsArea {
     position: fixed;
-    top: calc(var(--visual-viewport-top) + max(env(safe-area-inset-top), 40px) + 124px);
+    top: calc(var(--visual-viewport-top) + max(env(safe-area-inset-top), 32px) + 124px);
     right: max(16px, env(safe-area-inset-right));
     bottom: var(--visual-viewport-bottom);
     left: max(16px, env(safe-area-inset-left));
