@@ -12,7 +12,7 @@ createRoot(document.getElementById("root") as HTMLElement).render(
 if ("serviceWorker" in navigator && import.meta.env.PROD) {
   window.addEventListener("load", () => {
     navigator.serviceWorker
-      .register(`${import.meta.env.BASE_URL}sw.js?v=7`)
+      .register(`${import.meta.env.BASE_URL}sw.js?v=8`)
       .catch(() => undefined);
   });
 }

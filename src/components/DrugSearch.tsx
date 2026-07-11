@@ -71,31 +71,33 @@ export function DrugSearch({ query, onQueryChange, onSelect }: DrugSearchProps =
         </div>
       </div>
 
-      <div id="search-feedback" className="minimalSearchFeedback" aria-live="polite">
-        {trimmedQuery.length === 1 && <p>Wpisz jeszcze jeden znak</p>}
-        {hasSearchQuery && results.length === 0 && <p>Brak wyników</p>}
-      </div>
-
-      {visibleResults.length > 0 && (
-        <div className="minimalResultList" aria-label="Wyniki wyszukiwania">
-          {visibleResults.map((drug) =>
-            onSelect ? (
-              <button
-                key={drug.id}
-                type="button"
-                className="minimalResultButton"
-                onClick={() => onSelect(drug)}
-              >
-                {drug.activeSubstance === "-" ? "Brak danych o substancji" : drug.activeSubstance}
-              </button>
-            ) : (
-              <article key={drug.id} className="minimalResultItem">
-                <strong>{drug.name}</strong>
-              </article>
-            )
-          )}
+      <div className="searchResultsArea">
+        <div id="search-feedback" className="minimalSearchFeedback" aria-live="polite">
+          {trimmedQuery.length === 1 && <p>Wpisz jeszcze jeden znak</p>}
+          {hasSearchQuery && results.length === 0 && <p>Brak wyników</p>}
         </div>
-      )}
+
+        {visibleResults.length > 0 && (
+          <div className="minimalResultList" aria-label="Wyniki wyszukiwania">
+            {visibleResults.map((drug) =>
+              onSelect ? (
+                <button
+                  key={drug.id}
+                  type="button"
+                  className="minimalResultButton"
+                  onClick={() => onSelect(drug)}
+                >
+                  {drug.activeSubstance === "-" ? "Brak danych o substancji" : drug.activeSubstance}
+                </button>
+              ) : (
+                <article key={drug.id} className="minimalResultItem">
+                  <strong>{drug.name}</strong>
+                </article>
+              )
+            )}
+          </div>
+        )}
+      </div>
     </section>
   );
 }

@@ -855,7 +855,7 @@ button {
 @supports (-webkit-touch-callout: none) {
   @media (max-width: 679px) {
     .searchActive {
-      padding-top: 156px;
+      padding-top: 0;
     }
 
     .searchActive .searchControls {
@@ -868,6 +868,19 @@ button {
       margin-inline: 0;
       padding-top: 8px;
       background: #ffffff;
+    }
+
+    .searchActive .searchResultsArea {
+      position: fixed;
+      top: calc(max(env(safe-area-inset-top), 48px) + 124px);
+      right: max(16px, env(safe-area-inset-right));
+      bottom: 0;
+      left: max(16px, env(safe-area-inset-left));
+      overflow-y: auto;
+      padding-bottom: max(24px, env(safe-area-inset-bottom));
+      background: #ffffff;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
     }
 
     .selectionPage {
