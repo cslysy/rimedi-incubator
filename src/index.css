@@ -19,6 +19,39 @@ body {
   background: #ffffff;
 }
 
+.availabilityScreen {
+  display: grid;
+  min-height: 100dvh;
+  padding: max(32px, env(safe-area-inset-top)) 24px max(32px, env(safe-area-inset-bottom));
+  place-content: center;
+  justify-items: center;
+  gap: 14px;
+  color: #475569;
+  text-align: center;
+}
+
+.availabilityScreen h1,
+.availabilityScreen p {
+  margin: 0;
+}
+
+.availabilityScreen h1 {
+  color: #0f766e;
+  font-size: clamp(2.35rem, 12vw, 3.5rem);
+  letter-spacing: -0.04em;
+}
+
+.availabilityScreen button {
+  min-height: 48px;
+  margin-top: 8px;
+  padding: 10px 18px;
+  border: 0;
+  border-radius: 24px;
+  color: #ffffff;
+  background: #0f766e;
+  font-weight: 700;
+}
+
 button,
 input {
   font: inherit;
