@@ -44,24 +44,11 @@ function AvailabilityScreen({ checking = false }: AvailabilityScreenProps) {
   );
 }
 
-async function removeOfflineCopies(): Promise<void> {
-  if ("serviceWorker" in navigator) {
-    const registrations = await navigator.serviceWorker.getRegistrations().catch(() => []);
-    const applicationScope = new URL(import.meta.env.BASE_URL, window.location.href).href;
-    await Promise.all(
-      registrations
-        .filter((registration) => registration.scope === applicationScope)
-        .map((registration) => registration.unregister())
-    );
-  }
-
-  if ("caches" in window) {
-    const cacheNames = await window.caches.keys().catch(() => []);
-    await Promise.all(
-      cacheNames
-        .filter((cacheName) => cacheName.startsWith("rimedi-"))
-        .map((cacheName) => window.caches.delete(cacheName))
-    );
+function registerOfflineShell(): void {
+  if ("serviceWorker" in navigator && import.meta.env.PROD) {
+    navigator.serviceWorker
+      .register(`${import.meta.env.BASE_URL}sw.js?v=online-gated-1`)
+      .catch(() => undefined);
   }
 }
 
@@ -86,12 +73,13 @@ async function isTestVersionAvailable(): Promise<boolean> {
 async function startApplication(): Promise<void> {
   if (requiresOnlineAvailability) {
     root.render(<AvailabilityScreen checking />);
-    await removeOfflineCopies();
 
     if (!(await isTestVersionAvailable())) {
       root.render(<AvailabilityScreen />);
       return;
     }
+
+    registerOfflineShell();
   }
 
   root.render(

@@ -13,12 +13,15 @@ Wdrożenie można też uruchomić ręcznie z zakładki **Actions** przez
 
 ## Dostępność wersji testowej
 
-Wersja publikowana na GitHub Pages wymaga połączenia z serwerem i przy każdym
-uruchomieniu pobiera `public/availability.json` bez używania cache.
+Pliki aplikacji są przechowywane w cache, dzięki czemu zainstalowana PWA może
+uruchomić ekran statusu bez połączenia. Przy każdym uruchomieniu aplikacja pobiera
+jednak `public/availability.json` bezpośrednio z sieci i nigdy nie zapisuje go w
+cache.
 
 - `"enabled": true` udostępnia wyszukiwarkę.
 - `"enabled": false` wyświetla informację o zakończeniu testów.
-- Brak połączenia lub wyłączenie GitHub Pages również blokuje wyszukiwarkę.
+- Brak połączenia lub wyłączenie GitHub Pages blokuje wyszukiwarkę i wyświetla
+  komunikat o niedostępności aplikacji.
 
 Przed wyłączeniem Pages najpierw opublikuj `"enabled": false`, aby aktywne kopie
 otrzymały komunikat o zakończeniu testów.
