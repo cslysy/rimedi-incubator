@@ -3,8 +3,33 @@ import { createRoot } from "react-dom/client";
 import { App } from "./App";
 import "./index.css";
 
-const root = createRoot(document.getElementById("root") as HTMLElement);
+const rootElement = document.getElementById("root") as HTMLElement;
+const root = createRoot(rootElement);
 const requiresOnlineAvailability = import.meta.env.VITE_DISTRIBUTION !== "app-store";
+const startupStartedAt = window.performance.now();
+let startupDismissalStarted = false;
+
+function dismissStartupSplash(): void {
+  if (startupDismissalStarted) {
+    return;
+  }
+
+  startupDismissalStarted = true;
+  const splash = document.getElementById("startup-splash");
+  const remainingDisplayTime = Math.max(0, 650 - (window.performance.now() - startupStartedAt));
+
+  window.setTimeout(() => {
+    window.requestAnimationFrame(() => {
+      rootElement.classList.add("appEntering");
+      splash?.classList.add("isLeaving");
+
+      window.setTimeout(() => {
+        splash?.remove();
+        rootElement.classList.remove("appEntering");
+      }, 430);
+    });
+  }, remainingDisplayTime);
+}
 
 function updateVisualViewportPosition(): void {
   const viewport = window.visualViewport;
@@ -22,21 +47,7 @@ window.visualViewport?.addEventListener("resize", updateVisualViewportPosition, 
 window.visualViewport?.addEventListener("scroll", updateVisualViewportPosition, { passive: true });
 window.addEventListener("resize", updateVisualViewportPosition, { passive: true });
 
-interface AvailabilityScreenProps {
-  checking?: boolean;
-}
-
-function AvailabilityScreen({ checking = false }: AvailabilityScreenProps) {
-  if (checking) {
-    return (
-      <main className="startupSplash" aria-label="Uruchamianie Rimedi">
-        <strong className="startupLogo">Rimedi</strong>
-        <span className="startupTagline">Leki bez tajemnic</span>
-        <span className="startupLoader" aria-hidden="true" />
-      </main>
-    );
-  }
-
+function AvailabilityScreen() {
   return (
     <main className="availabilityScreen">
       <h1>Rimedi</h1>
@@ -83,6 +94,7 @@ function renderApplication(): void {
       <App />
     </StrictMode>
   );
+  dismissStartupSplash();
 }
 
 let availabilityCheckSequence = 0;
@@ -92,10 +104,9 @@ async function enforceTestAvailability(): Promise<void> {
 
   if (!navigator.onLine) {
     root.render(<AvailabilityScreen />);
+    dismissStartupSplash();
     return;
   }
-
-  root.render(<AvailabilityScreen checking />);
 
   const isAvailable = await isTestVersionAvailable();
 
@@ -108,12 +119,14 @@ async function enforceTestAvailability(): Promise<void> {
     renderApplication();
   } else {
     root.render(<AvailabilityScreen />);
+    dismissStartupSplash();
   }
 }
 
 function blockUnavailableApplication(): void {
   availabilityCheckSequence += 1;
   root.render(<AvailabilityScreen />);
+  dismissStartupSplash();
 }
 
 if (requiresOnlineAvailability) {
