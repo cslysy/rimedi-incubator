@@ -796,6 +796,20 @@ button {
   transition: font-size 180ms ease, text-align 180ms ease;
 }
 
+.searchBrand {
+  display: grid;
+  gap: 4px;
+}
+
+.searchTagline {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+
 .searchInputWrap {
   position: relative;
 }
@@ -865,6 +879,10 @@ button {
 .searchActive .searchControls h1 {
   font-size: 1.45rem;
   text-align: left;
+}
+
+.searchActive .searchTagline {
+  display: none;
 }
 
 .minimalSearchFeedback {

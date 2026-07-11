@@ -49,7 +49,10 @@ export function DrugSearch({ query, onQueryChange, onSelect }: DrugSearchProps =
       aria-labelledby="drug-search-title"
     >
       <div className="searchControls">
-        <h1 id="drug-search-title">Rimedi</h1>
+        <div className="searchBrand">
+          <h1 id="drug-search-title">Rimedi</h1>
+          <p className="searchTagline">Leki bez tajemnic</p>
+        </div>
         <label className="visuallyHidden" htmlFor="drug-search">
           Nazwa handlowa lub substancja czynna
         </label>
