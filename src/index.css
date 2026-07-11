@@ -897,38 +897,40 @@ button {
   padding-top: env(safe-area-inset-top);
 }
 
+@media (max-width: 679px) {
+  .searchActive {
+    padding-top: 0;
+  }
+
+  .searchActive .searchControls {
+    position: fixed;
+    top: max(env(safe-area-inset-top), 40px);
+    right: max(16px, env(safe-area-inset-right));
+    left: max(16px, env(safe-area-inset-left));
+    z-index: 20;
+    width: auto;
+    margin-inline: 0;
+    padding-top: 8px;
+    background: #ffffff;
+  }
+
+  .searchActive .searchResultsArea {
+    position: fixed;
+    top: calc(max(env(safe-area-inset-top), 40px) + 124px);
+    right: max(16px, env(safe-area-inset-right));
+    bottom: 0;
+    left: max(16px, env(safe-area-inset-left));
+    overflow-y: auto;
+    padding-bottom: max(24px, env(safe-area-inset-bottom));
+    background: #ffffff;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
 /* iOS potrafi chwilowo zwrócić 0 dla safe-area po zmianie widoku w PWA. */
 @supports (-webkit-touch-callout: none) {
   @media (max-width: 679px) {
-    .searchActive {
-      padding-top: 0;
-    }
-
-    .searchActive .searchControls {
-      position: fixed;
-      top: max(env(safe-area-inset-top), 40px);
-      right: max(16px, env(safe-area-inset-right));
-      left: max(16px, env(safe-area-inset-left));
-      z-index: 20;
-      width: auto;
-      margin-inline: 0;
-      padding-top: 8px;
-      background: #ffffff;
-    }
-
-    .searchActive .searchResultsArea {
-      position: fixed;
-      top: calc(max(env(safe-area-inset-top), 40px) + 124px);
-      right: max(16px, env(safe-area-inset-right));
-      bottom: 0;
-      left: max(16px, env(safe-area-inset-left));
-      overflow-y: auto;
-      padding-bottom: max(24px, env(safe-area-inset-bottom));
-      background: #ffffff;
-      overscroll-behavior: contain;
-      -webkit-overflow-scrolling: touch;
-    }
-
     .selectionPage {
       padding-top: max(env(safe-area-inset-top), 48px);
     }
