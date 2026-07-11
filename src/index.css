@@ -854,9 +854,20 @@ button {
 /* iOS potrafi chwilowo zwrócić 0 dla safe-area po zmianie widoku w PWA. */
 @supports (-webkit-touch-callout: none) {
   @media (max-width: 679px) {
+    .searchActive {
+      padding-top: 156px;
+    }
+
     .searchActive .searchControls {
+      position: fixed;
       top: max(env(safe-area-inset-top), 48px);
+      right: max(16px, env(safe-area-inset-right));
+      left: max(16px, env(safe-area-inset-left));
+      z-index: 20;
+      width: auto;
+      margin-inline: 0;
       padding-top: 8px;
+      background: #ffffff;
     }
 
     .selectionPage {
