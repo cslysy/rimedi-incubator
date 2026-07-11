@@ -864,7 +864,7 @@ button {
 
     .searchActive .searchControls {
       position: fixed;
-      top: max(env(safe-area-inset-top), 48px);
+      top: max(env(safe-area-inset-top), 40px);
       right: max(16px, env(safe-area-inset-right));
       left: max(16px, env(safe-area-inset-left));
       z-index: 20;
@@ -876,7 +876,7 @@ button {
 
     .searchActive .searchResultsArea {
       position: fixed;
-      top: calc(max(env(safe-area-inset-top), 48px) + 124px);
+      top: calc(max(env(safe-area-inset-top), 40px) + 124px);
       right: max(16px, env(safe-area-inset-right));
       bottom: 0;
       left: max(16px, env(safe-area-inset-left));
