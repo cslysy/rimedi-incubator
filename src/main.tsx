@@ -6,29 +6,31 @@ import "./index.css";
 const rootElement = document.getElementById("root") as HTMLElement;
 const root = createRoot(rootElement);
 const requiresOnlineAvailability = import.meta.env.VITE_DISTRIBUTION !== "app-store";
-const startupStartedAt = window.performance.now();
 let startupDismissalStarted = false;
 
-function dismissStartupSplash(): void {
+function dismissStartupSplash(revealSearch = false): void {
   if (startupDismissalStarted) {
     return;
   }
 
   startupDismissalStarted = true;
   const splash = document.getElementById("startup-splash");
-  const remainingDisplayTime = Math.max(0, 650 - (window.performance.now() - startupStartedAt));
 
-  window.setTimeout(() => {
+  window.requestAnimationFrame(() => {
     window.requestAnimationFrame(() => {
-      rootElement.classList.add("appEntering");
+      rootElement.classList.add(revealSearch ? "isRevealing" : "appEntering");
       splash?.classList.add("isLeaving");
 
       window.setTimeout(() => {
         splash?.remove();
+      }, 280);
+
+      window.setTimeout(() => {
         rootElement.classList.remove("appEntering");
-      }, 430);
+        rootElement.classList.remove("appIntro", "isRevealing");
+      }, revealSearch ? 1450 : 430);
     });
-  }, remainingDisplayTime);
+  });
 }
 
 function updateVisualViewportPosition(): void {
@@ -89,12 +91,13 @@ async function isTestVersionAvailable(): Promise<boolean> {
 }
 
 function renderApplication(): void {
+  rootElement.classList.add("appIntro");
   root.render(
     <StrictMode>
       <App />
     </StrictMode>
   );
-  dismissStartupSplash();
+  dismissStartupSplash(true);
 }
 
 let availabilityCheckSequence = 0;
