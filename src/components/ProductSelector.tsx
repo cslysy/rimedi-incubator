@@ -17,6 +17,22 @@ export interface ProductNameGroup {
   products: DrugProduct[];
 }
 
+export interface ProductVariantGroup {
+  concentrationText: string;
+  form: string;
+  representative: DrugProduct;
+  products: DrugProduct[];
+}
+
+function normalizeVariantPart(value: string): string {
+  return value
+    .normalize("NFKC")
+    .trim()
+    .toLocaleLowerCase("pl-PL")
+    .replace(/\s+/g, "")
+    .replace(/,/g, ".");
+}
+
 export function groupProductsByTradeName(products: DrugProduct[]): ProductNameGroup[] {
   const groups = new Map<string, ProductNameGroup>();
 
@@ -38,6 +54,28 @@ export function groupProductsByTradeName(products: DrugProduct[]): ProductNameGr
   );
 }
 
+export function groupProductsByVariant(products: DrugProduct[]): ProductVariantGroup[] {
+  const groups = new Map<string, ProductVariantGroup>();
+
+  for (const product of products) {
+    const key = `${normalizeVariantPart(product.concentrationText)}::${normalizeVariantPart(product.form)}`;
+    const existingGroup = groups.get(key);
+
+    if (existingGroup) {
+      existingGroup.products.push(product);
+    } else {
+      groups.set(key, {
+        concentrationText: product.concentrationText,
+        form: product.form,
+        representative: product,
+        products: [product]
+      });
+    }
+  }
+
+  return [...groups.values()];
+}
+
 export function ProductSelector({ products, onSelect, useBrowserHistory = false }: ProductSelectorProps) {
   const [selectedTradeName, setSelectedTradeName] = useState<string | null>(() => {
     const navigation = useBrowserHistory ? getNavigationState() : undefined;
@@ -45,6 +83,10 @@ export function ProductSelector({ products, onSelect, useBrowserHistory = false 
   });
   const productGroups = useMemo(() => groupProductsByTradeName(products), [products]);
   const selectedGroup = productGroups.find((group) => group.tradeName === selectedTradeName);
+  const selectedVariants = useMemo(
+    () => (selectedGroup ? groupProductsByVariant(selectedGroup.products) : []),
+    [selectedGroup]
+  );
 
   useEffect(() => {
     if (!useBrowserHistory) {
@@ -92,11 +134,12 @@ export function ProductSelector({ products, onSelect, useBrowserHistory = false 
       <section className="minimalSelection" aria-labelledby="product-dose-selector-title">
         <h2 id="product-dose-selector-title">{selectedGroup.tradeName}</h2>
         <div className="minimalResultList variantList">
-          {selectedGroup.products.map((product) => {
+          {selectedVariants.map((variant) => {
+            const product = variant.representative;
             const content = (
               <>
-                <strong>{product.concentrationText || "Brak danych o mocy"}</strong>
-                <span>{product.form}</span>
+                <strong>{variant.concentrationText || "Brak danych o mocy"}</strong>
+                <span>{variant.form}</span>
               </>
             );
 
