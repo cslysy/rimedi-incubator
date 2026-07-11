@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { drugRepository } from "../services/DrugRepository";
 import type { Drug } from "../types";
 
@@ -19,6 +19,29 @@ export function DrugSearch({ query, onQueryChange, onSelect }: DrugSearchProps =
   const visibleResults = results.slice(0, MAX_VISIBLE_RESULTS);
   const isSearching = trimmedQuery.length > 0;
   const hasSearchQuery = trimmedQuery.length >= 2;
+
+  useEffect(() => {
+    if (!isSearching) {
+      return;
+    }
+
+    function resetSearchScroll(): void {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    }
+
+    resetSearchScroll();
+    const animationFrame = window.requestAnimationFrame(resetSearchScroll);
+    const keyboardStart = window.setTimeout(resetSearchScroll, 150);
+    const keyboardEnd = window.setTimeout(resetSearchScroll, 400);
+
+    return () => {
+      window.cancelAnimationFrame(animationFrame);
+      window.clearTimeout(keyboardStart);
+      window.clearTimeout(keyboardEnd);
+    };
+  }, [isSearching]);
 
   function updateQuery(nextQuery: string): void {
     if (onQueryChange) {
