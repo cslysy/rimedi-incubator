@@ -1,4 +1,4 @@
-const CACHE_NAME = "rimedi-v8";
+const CACHE_NAME = "rimedi-v9";
 const BASE_URL = new URL("./", self.location.href);
 const APP_SHELL = ["./", "index.html", "manifest.webmanifest", "icons/icon.svg"].map(
   (path) => new URL(path, BASE_URL).href

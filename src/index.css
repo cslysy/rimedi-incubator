@@ -829,6 +829,10 @@ button {
   font-size: 0.9rem;
 }
 
+.searchActive .minimalSearchFeedback:empty {
+  min-height: 8px;
+}
+
 .minimalResultList {
   margin-top: 4px;
 }
