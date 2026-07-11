@@ -1,0 +1,52 @@
+[
+  {
+    "productIds": ["rpl-product-100279418", "rpl-product-100279424"],
+    "tradeName": "Forxiga",
+    "activeSubstance": "Dapagliflozinum",
+    "conditionTags": [
+      "cukrzyca typu 2",
+      "objawowa przewlekła niewydolność serca",
+      "przewlekła choroba nerek"
+    ],
+    "indications": [
+      "Dorośli oraz dzieci w wieku 10 lat i starsze: leczenie niewystarczająco kontrolowanej cukrzycy typu 2 jako leczenie wspomagające dietę i ćwiczenia fizyczne.",
+      "Dorośli: leczenie objawowej przewlekłej niewydolności serca.",
+      "Dorośli: leczenie przewlekłej choroby nerek."
+    ],
+    "sourceTitle": "Forxiga, INN-dapagliflozin - EPAR Product Information (ChPL)",
+    "sourceUrl": "https://www.ema.europa.eu/pl/documents/product-information/forxiga-epar-product-information_pl.pdf",
+    "sourceSection": "4.1 Wskazania do stosowania",
+    "sourceUpdatedAt": "2026-03-12",
+    "verifiedAt": "2026-07-09"
+  },
+  {
+    "productIds": [
+      "rpl-product-100095010",
+      "rpl-product-100095026",
+      "rpl-product-100097150",
+      "rpl-product-100201712",
+      "rpl-product-100201735",
+      "rpl-product-100201741"
+    ],
+    "tradeName": "Captopril Jelfa / Captopril Polfarmex",
+    "activeSubstance": "Captoprilum",
+    "conditionTags": [
+      "nadciśnienie tętnicze",
+      "przewlekła niewydolność serca",
+      "zawał mięśnia sercowego",
+      "nefropatia cukrzycowa typu 1 z makroproteinurią"
+    ],
+    "indications": [
+      "Leczenie nadciśnienia tętniczego.",
+      "Leczenie przewlekłej niewydolności serca ze zmniejszoną czynnością skurczową komór, w skojarzeniu z diuretykami oraz, gdy właściwe, z glikozydami naparstnicy i beta-adrenolitykami.",
+      "Zawał mięśnia sercowego: krótkotrwałe leczenie klinicznie stabilnych pacjentów w ciągu pierwszych 24 godzin od zawału oraz długotrwała profilaktyka objawowej niewydolności serca u klinicznie stabilnych pacjentów z bezobjawową dysfunkcją lewej komory.",
+      "Leczenie makroproteinurycznej nefropatii cukrzycowej u pacjentów z cukrzycą typu 1."
+    ],
+    "sourceTitle": "Captopril 25mg/5ml Oral Solution - Summary of Product Characteristics (SmPC)",
+    "sourceUrl": "https://www.medicines.org.uk/emc/product/5250/smpc",
+    "sourceSection": "4.1 Therapeutic indications",
+    "sourceUpdatedAt": "2023-10-09",
+    "verifiedAt": "2026-07-09",
+    "note": "Źródło opisuje wskazania dla substancji czynnej captopril w ChPL/SmPC; lokalne rekordy RPL Captopril Jelfa i Captopril Polfarmex mają tę samą substancję czynną oraz kod ATC C09AA01."
+  }
+]

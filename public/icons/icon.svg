@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Rimedi">
+  <rect width="512" height="512" rx="96" fill="#0f766e"/>
+  <path fill="#ffffff" d="M232 112h48v112h112v48H280v112h-48V272H120v-48h112z"/>
+  <path fill="#ccfbf1" d="M143 400h226v32H143z"/>
+</svg>

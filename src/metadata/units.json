@@ -1,0 +1,11 @@
+[
+  { "code": "mg", "label": "mg" },
+  { "code": "g", "label": "g" },
+  { "code": "µg", "label": "µg" },
+  { "code": "ml", "label": "ml" },
+  { "code": "j.m.", "label": "j.m." },
+  { "code": "mmol", "label": "mmol" },
+  { "code": "kg", "label": "kg" },
+  { "code": "min", "label": "min" },
+  { "code": "h", "label": "h" }
+]

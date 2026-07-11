@@ -1,0 +1,52 @@
+[
+  {
+    "productId": "rpl-product-100006494",
+    "calculators": ["MG_PER_KG_TO_MG"],
+    "routeCalculators": { "PO": ["MG_PER_KG_TO_MG"] },
+    "highRisk": false,
+    "sourceNote": "Dane produktu z RPL. Kalkulator przypisany ręcznie."
+  },
+  {
+    "productId": "rpl-product-100080527",
+    "calculators": ["DOSE_TO_ML", "MG_PER_KG_TO_ML"],
+    "routeCalculators": { "PO": ["DOSE_TO_ML", "MG_PER_KG_TO_ML"] },
+    "highRisk": false,
+    "sourceNote": "Dane produktu z RPL. Kalkulatory przypisane ręcznie."
+  },
+  {
+    "productId": "rpl-product-100246123",
+    "calculators": ["DOSE_TO_ML", "MG_PER_KG_TO_ML", "ML_PER_HOUR", "DROPS_PER_MIN"],
+    "routeCalculators": {
+      "IV": ["DOSE_TO_ML", "MG_PER_KG_TO_ML", "ML_PER_HOUR", "DROPS_PER_MIN"]
+    },
+    "highRisk": false,
+    "sourceNote": "Dane produktu z RPL. Kalkulatory przypisane ręcznie."
+  },
+  {
+    "productId": "rpl-product-100282024",
+    "calculators": ["DOSE_TO_ML", "MG_PER_KG_TO_ML", "ML_PER_HOUR", "DROPS_PER_MIN"],
+    "routeCalculators": {
+      "IV": ["DOSE_TO_ML", "MG_PER_KG_TO_ML", "ML_PER_HOUR", "DROPS_PER_MIN"]
+    },
+    "highRisk": false,
+    "sourceNote": "Dane produktu z RPL. Kalkulatory przypisane ręcznie."
+  },
+  {
+    "productId": "rpl-product-100393835",
+    "calculators": ["DOSE_TO_ML", "MG_PER_KG_TO_ML", "ML_PER_HOUR", "DROPS_PER_MIN"],
+    "routeCalculators": {
+      "IV": ["DOSE_TO_ML", "MG_PER_KG_TO_ML", "ML_PER_HOUR", "DROPS_PER_MIN"]
+    },
+    "highRisk": false,
+    "sourceNote": "Dane produktu z RPL. Kalkulatory przypisane ręcznie."
+  },
+  {
+    "productId": "rpl-product-100462097",
+    "calculators": ["DOSE_TO_ML", "MG_PER_KG_TO_ML", "ML_PER_HOUR", "DROPS_PER_MIN"],
+    "routeCalculators": {
+      "IV": ["DOSE_TO_ML", "MG_PER_KG_TO_ML", "ML_PER_HOUR", "DROPS_PER_MIN"]
+    },
+    "highRisk": false,
+    "sourceNote": "Dane produktu z RPL. Kalkulatory przypisane ręcznie."
+  }
+]

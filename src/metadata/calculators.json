@@ -1,0 +1,37 @@
+[
+  {
+    "code": "DOSE_TO_ML",
+    "label": "Dawka → ml",
+    "description": "Przelicza dawkę zleconą na objętość przy znanym stężeniu."
+  },
+  {
+    "code": "MG_PER_KG_TO_MG",
+    "label": "mg/kg → mg",
+    "description": "Przelicza wartość wpisaną w mg/kg na całkowitą liczbę mg."
+  },
+  {
+    "code": "MG_PER_KG_TO_ML",
+    "label": "mg/kg → ml",
+    "description": "Przelicza wartość mg/kg na objętość przy znanym stężeniu."
+  },
+  {
+    "code": "UNITS_TO_ML",
+    "label": "j.m. → ml",
+    "description": "Przelicza jednostki międzynarodowe na objętość."
+  },
+  {
+    "code": "ML_PER_HOUR",
+    "label": "ml/h",
+    "description": "Przelicza objętość i czas na przepływ w ml/h."
+  },
+  {
+    "code": "DROPS_PER_MIN",
+    "label": "krople/min",
+    "description": "Przelicza objętość, czas i krople/ml na krople na minutę."
+  },
+  {
+    "code": "AMPULE_COUNT",
+    "label": "Ile ampułek",
+    "description": "Oblicza liczbę ampułek potrzebną do podanej objętości."
+  }
+]

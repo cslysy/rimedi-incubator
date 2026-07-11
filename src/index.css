@@ -1,0 +1,967 @@
+:root {
+  color: #0f172a;
+  background: #ffffff;
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: #ffffff;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.pageShell {
+  width: min(100%, 720px);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.statusPill {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 5;
+  padding: 7px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #334155;
+  font-size: 0.78rem;
+  font-weight: 800;
+  box-shadow: 0 8px 22px rgb(15 23 42 / 0.08);
+}
+
+.statusPill.offline {
+  border-color: #fca5a5;
+  background: #fee2e2;
+  color: #7f1d1d;
+}
+
+.homeHero,
+.screenBlock,
+.homeSection {
+  padding: 24px 0;
+}
+
+.searchPage {
+  padding-top: 56px;
+}
+
+.searchHeader {
+  display: grid;
+  gap: 14px;
+  padding: 28px 0 8px;
+}
+
+.searchHeader p {
+  max-width: 620px;
+  margin: 0;
+  color: #475569;
+}
+
+.searchHeader .appKicker {
+  color: #0f766e;
+}
+
+.searchBackButton {
+  margin-top: 24px;
+}
+
+.selectedSubstance {
+  display: grid;
+  gap: 4px;
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-left: 4px solid #0f766e;
+  background: #ecfeff;
+}
+
+.selectedSubstance span {
+  color: #64748b;
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.variantCard {
+  cursor: default;
+}
+
+.homeHero {
+  min-height: 44vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 18px;
+}
+
+.appKicker,
+.stepLabel {
+  margin: 0;
+  color: #0f766e;
+  font-size: 0.86rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+h1,
+h2 {
+  margin: 0;
+  line-height: 1.08;
+  letter-spacing: 0;
+}
+
+h1 {
+  font-size: 2.8rem;
+}
+
+h2 {
+  font-size: 1.7rem;
+}
+
+p {
+  line-height: 1.55;
+}
+
+.primaryButton,
+.secondaryButton,
+.ghostButton,
+.listButton,
+.segmentedControl button,
+.stepButton,
+.digit {
+  min-height: 44px;
+  border: 0;
+  border-radius: 8px;
+}
+
+.primaryButton,
+.secondaryButton {
+  width: 100%;
+  padding: 16px 18px;
+  font-weight: 800;
+}
+
+.primaryButton {
+  color: #ffffff;
+  background: #0f766e;
+}
+
+.secondaryButton {
+  color: #0f766e;
+  background: #ccfbf1;
+  margin-top: 10px;
+}
+
+.ghostButton {
+  padding: 10px 14px;
+  color: #0f766e;
+  background: #e2e8f0;
+}
+
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+  color: #475569;
+  font-weight: 700;
+}
+
+.flowSummary {
+  display: flex;
+  gap: 8px;
+  padding: 8px 0 12px;
+  overflow-x: auto;
+}
+
+.flowSummary div {
+  flex: 0 0 auto;
+  display: grid;
+  gap: 2px;
+  max-width: 220px;
+  padding: 8px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.flowSummary span {
+  color: #64748b;
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+.flowSummary strong {
+  overflow: hidden;
+  color: #0f172a;
+  font-size: 0.88rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fieldLabel {
+  display: block;
+  margin: 18px 0 8px;
+  color: #334155;
+  font-weight: 800;
+}
+
+.textInput {
+  width: 100%;
+  min-height: 52px;
+  padding: 12px 14px;
+  border: 2px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #0f172a;
+}
+
+.resultList {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.searchFeedback {
+  min-height: 28px;
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.searchFeedback p {
+  margin: 10px 0 0;
+}
+
+.drugCard {
+  padding: 18px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 8px 22px rgb(15 23 42 / 0.06);
+}
+
+.drugCard h3,
+.drugCard p {
+  margin: 0;
+}
+
+.drugCard h3 {
+  font-size: 1.15rem;
+}
+
+.drugSubstance {
+  padding-top: 5px;
+  color: #64748b;
+}
+
+.productList {
+  display: grid;
+  gap: 10px;
+  margin: 14px 0 0;
+  padding: 14px 0 0;
+  border-top: 1px solid #e2e8f0;
+  list-style: none;
+}
+
+.productList li {
+  display: grid;
+  gap: 3px;
+}
+
+.productList span,
+.moreProducts {
+  color: #64748b;
+  font-size: 0.88rem;
+}
+
+.drugCard .moreProducts {
+  margin-top: 12px;
+}
+
+.listButton {
+  display: grid;
+  gap: 6px;
+  width: 100%;
+  padding: 16px;
+  text-align: left;
+  color: #0f172a;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 8px 22px rgb(15 23 42 / 0.06);
+}
+
+.listButton span,
+.mutedText,
+.emptyState {
+  color: #64748b;
+}
+
+.indicationPreview {
+  display: grid;
+  gap: 3px;
+  margin-top: 4px;
+  padding-top: 10px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.indicationPreview .indicationPreviewTitle {
+  color: #0f766e;
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.routeLabel {
+  align-items: center;
+  display: flex;
+  gap: 0.75rem;
+}
+
+.routeLabel .routeEmoji {
+  color: inherit;
+  flex: 0 0 1.75rem;
+  font-size: 1.35rem;
+  line-height: 1;
+  text-align: center;
+}
+
+.homeSection h2 {
+  margin-bottom: 12px;
+}
+
+.numberField {
+  margin: 18px 0;
+}
+
+.numberFieldControls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.digitPicker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.digitRow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px;
+  overflow-x: auto;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.digitSlot {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.digit {
+  width: 42px;
+  height: 72px;
+  display: grid;
+  place-items: center;
+  color: #0f172a;
+  background: #f1f5f9;
+  border: 1px solid #dbe4ee;
+  touch-action: none;
+}
+
+.digit strong {
+  font-size: 1.45rem;
+}
+
+.digitHint {
+  color: #94a3b8;
+  font-size: 0.74rem;
+}
+
+.decimalSeparator {
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.stepButton {
+  width: 44px;
+  color: #0f766e;
+  background: #ccfbf1;
+  font-size: 1.4rem;
+  font-weight: 900;
+}
+
+.unitBadge {
+  flex: 0 0 auto;
+  padding: 12px;
+  border-radius: 8px;
+  color: #0f766e;
+  background: #ccfbf1;
+  font-weight: 900;
+}
+
+.inlineField {
+  margin: 18px 0;
+}
+
+.derivedInputs {
+  display: grid;
+  gap: 8px;
+  margin: 16px 0;
+  padding: 12px;
+  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+}
+
+.derivedInputs div {
+  display: grid;
+  gap: 2px;
+}
+
+.derivedInputs dt {
+  color: #64748b;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.derivedInputs dd {
+  margin: 0;
+  color: #0f172a;
+  font-weight: 800;
+}
+
+.segmentedControl {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.segmentedControl button {
+  padding: 10px 14px;
+  color: #334155;
+  background: #e2e8f0;
+}
+
+.segmentedControl .selected {
+  color: #ffffff;
+  background: #0f766e;
+}
+
+.resultHero {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin: 20px 0;
+  padding: 20px;
+  border-radius: 8px;
+  color: #ffffff;
+  background: #0f766e;
+}
+
+.resultHero span {
+  font-size: 3rem;
+  font-weight: 900;
+}
+
+.resultHero strong {
+  font-size: 1.3rem;
+}
+
+.summaryList {
+  display: grid;
+  gap: 10px;
+}
+
+.summaryList div {
+  display: grid;
+  gap: 4px;
+  padding: 12px 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.summaryList dt {
+  color: #64748b;
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.summaryList dd {
+  margin: 0;
+}
+
+.detailsBlock {
+  margin: 20px 0;
+  padding: 14px;
+  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+}
+
+.warningText,
+.errorText {
+  padding: 12px;
+  border-radius: 8px;
+  color: #7f1d1d;
+  background: #fee2e2;
+  font-weight: 800;
+}
+
+.safetyText {
+  padding: 14px;
+  border-left: 4px solid #0f766e;
+  background: #ecfeff;
+  color: #164e63;
+}
+
+@media (min-width: 680px) {
+  .pageShell {
+    padding: 32px;
+  }
+
+  h1 {
+    font-size: 3.4rem;
+  }
+}
+
+/* Minimalny interfejs wyszukiwarki MVP */
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.minimalSearchPage {
+  width: min(100%, 680px);
+  padding: 20px;
+  background: #ffffff;
+}
+
+.minimalSearchHeader {
+  padding-top: clamp(18vh, 180px, 26vh);
+  text-align: center;
+}
+
+.minimalSearchHeader h1 {
+  color: #0f766e;
+  font-size: clamp(2.25rem, 9vw, 3.5rem);
+  font-weight: 650;
+  letter-spacing: -0.04em;
+}
+
+.minimalDrugSearch {
+  padding-top: 30px;
+}
+
+.minimalSearchInput {
+  width: 100%;
+  min-height: 56px;
+  padding: 14px 20px;
+  border: 1px solid #d7dde5;
+  border-radius: 28px;
+  outline: none;
+  color: #172033;
+  background: #ffffff;
+  box-shadow: 0 1px 6px rgb(15 23 42 / 0.12);
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.minimalSearchInput:hover,
+.minimalSearchInput:focus {
+  border-color: #b9c2ce;
+  box-shadow: 0 2px 10px rgb(15 23 42 / 0.16);
+}
+
+.minimalSearchFeedback {
+  min-height: 28px;
+  color: #64748b;
+  text-align: center;
+}
+
+.minimalSearchFeedback p {
+  margin: 12px 0 0;
+}
+
+.minimalResultList {
+  margin-top: 8px;
+  border-top: 1px solid #edf0f4;
+}
+
+.minimalResultButton,
+.minimalResultItem,
+.minimalVariant {
+  width: 100%;
+  min-height: 52px;
+  padding: 14px 4px;
+  border: 0;
+  border-bottom: 1px solid #edf0f4;
+  border-radius: 0;
+  color: #172033;
+  background: transparent;
+  text-align: left;
+}
+
+.minimalResultButton {
+  font-weight: 550;
+}
+
+.minimalResultButton:hover,
+.minimalResultButton:focus-visible {
+  color: #0f766e;
+  background: #f8fafc;
+  outline: none;
+}
+
+.selectionPage {
+  padding-top: 24px;
+}
+
+.minimalTopBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+.backLink {
+  min-height: 44px;
+  padding: 8px 0;
+  border: 0;
+  color: #475569;
+  background: transparent;
+}
+
+.backLink:hover,
+.backLink:focus-visible {
+  color: #0f766e;
+  outline: none;
+}
+
+.substanceTitle {
+  margin-top: 36px;
+  font-size: clamp(1.8rem, 7vw, 2.5rem);
+  font-weight: 650;
+  letter-spacing: -0.025em;
+}
+
+.minimalSelection {
+  padding-top: 34px;
+}
+
+.minimalSelection h2 {
+  color: #64748b;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.inlineBackLink {
+  margin-bottom: 18px;
+}
+
+.minimalVariant {
+  display: grid;
+  gap: 4px;
+  cursor: default;
+}
+
+.minimalVariant strong {
+  font-size: 1.05rem;
+}
+
+.minimalVariant span {
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+@media (min-width: 680px) {
+  .minimalSearchPage {
+    padding-inline: 32px;
+  }
+}
+
+/* Ergonomia PWA na telefonach */
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+button,
+input {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  touch-action: manipulation;
+}
+
+.minimalSearchPage {
+  padding-top: calc(16px + env(safe-area-inset-top));
+  padding-right: max(16px, env(safe-area-inset-right));
+  padding-bottom: calc(24px + env(safe-area-inset-bottom));
+  padding-left: max(16px, env(safe-area-inset-left));
+}
+
+.mobileSearchExperience {
+  min-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 40px);
+  padding-top: clamp(18vh, 150px, 25vh);
+}
+
+.searchControls {
+  display: grid;
+  gap: 28px;
+  background: #ffffff;
+}
+
+.searchControls h1 {
+  color: #0f766e;
+  font-size: clamp(2.35rem, 12vw, 3.5rem);
+  font-weight: 650;
+  letter-spacing: -0.04em;
+  text-align: center;
+  transition: font-size 180ms ease, text-align 180ms ease;
+}
+
+.searchInputWrap {
+  position: relative;
+}
+
+.minimalSearchInput {
+  min-height: 56px;
+  padding: 14px 52px 14px 48px;
+  font-size: 16px;
+  line-height: 1.35;
+  appearance: none;
+}
+
+.minimalSearchInput::-webkit-search-cancel-button {
+  display: none;
+}
+
+.searchIcon {
+  position: absolute;
+  top: 50%;
+  left: 17px;
+  z-index: 1;
+  width: 21px;
+  height: 21px;
+  fill: none;
+  stroke: #64748b;
+  stroke-linecap: round;
+  stroke-width: 2;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.clearSearchButton {
+  position: absolute;
+  top: 50%;
+  right: 4px;
+  display: grid;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  color: #64748b;
+  background: transparent;
+  font-size: 1.65rem;
+  line-height: 1;
+  transform: translateY(-50%);
+}
+
+.clearSearchButton:active {
+  background: #f1f5f9;
+}
+
+.searchActive {
+  padding-top: 0;
+}
+
+.searchActive .searchControls {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  gap: 12px;
+  margin-inline: -4px;
+  padding: max(8px, env(safe-area-inset-top)) 4px 12px;
+}
+
+.searchActive .searchControls h1 {
+  font-size: 1.45rem;
+  text-align: left;
+}
+
+.minimalSearchFeedback {
+  min-height: 32px;
+  font-size: 0.9rem;
+}
+
+.minimalResultList {
+  margin-top: 4px;
+}
+
+.minimalResultButton,
+.minimalResultItem,
+.minimalVariant {
+  min-height: 56px;
+  padding: 16px 8px;
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.minimalResultButton:active {
+  color: #0f766e;
+  background: #f1f5f9;
+}
+
+.selectionPage {
+  padding-top: env(safe-area-inset-top);
+}
+
+/* iOS potrafi chwilowo zwrócić 0 dla safe-area po zmianie widoku w PWA. */
+@supports (-webkit-touch-callout: none) {
+  @media (max-width: 679px) {
+    .selectionPage {
+      padding-top: max(env(safe-area-inset-top), 48px);
+    }
+  }
+}
+
+.minimalTopBar {
+  position: relative;
+  top: auto;
+  z-index: auto;
+  justify-content: flex-start;
+  min-height: 68px;
+  padding: 8px 0;
+  background: #ffffff;
+  backdrop-filter: none;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 52px;
+  min-height: 52px;
+  padding: 6px 4px 6px 0;
+  border: 0;
+  border-radius: 10px;
+  color: #0f766e;
+  background: transparent;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: left;
+}
+
+.backLink span {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  place-items: center;
+  border-radius: 50%;
+  color: #ffffff;
+  background: #0f766e;
+  font-size: 1.3rem;
+  line-height: 1;
+  box-shadow: 0 2px 7px rgb(15 118 110 / 0.22);
+  transition: background 120ms ease, transform 120ms ease;
+}
+
+.backLink:active {
+  background: transparent;
+}
+
+.backLink:active span {
+  background: #115e59;
+  transform: scale(0.94);
+}
+
+.backLink:focus-visible {
+  outline: none;
+}
+
+.backLink:focus-visible span {
+  outline: 3px solid rgb(20 184 166 / 0.32);
+  outline-offset: 3px;
+}
+
+.substanceTitle {
+  margin-top: 28px;
+  overflow-wrap: anywhere;
+}
+
+.minimalSelection {
+  padding-top: 30px;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.minimalSelection h2 {
+  font-size: 1rem;
+}
+
+.inlineBackLink {
+  margin: 0 0 20px;
+}
+
+@media (max-width: 420px) {
+  .mobileSearchExperience {
+    padding-top: 20vh;
+  }
+
+  .searchActive {
+    padding-top: 0;
+  }
+
+  .searchControls h1 {
+    font-size: clamp(2.2rem, 12vw, 2.85rem);
+  }
+
+  .searchActive .searchControls h1 {
+    font-size: 1.35rem;
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

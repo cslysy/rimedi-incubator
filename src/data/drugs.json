@@ -1,0 +1,170 @@
+{
+  "drugs": [
+    {
+      "id": "paracetamol",
+      "name": "Paracetamol",
+      "activeSubstance": "Paracetamol",
+      "products": [
+        {
+          "id": "paracetamol-infusion-10mg-ml",
+          "drugId": "paracetamol",
+          "tradeName": "Paracetamol Demo Infuzja",
+          "activeSubstance": "Paracetamol",
+          "form": "roztwór do infuzji",
+          "strengthValue": 10,
+          "strengthUnit": "mg",
+          "concentrationText": "10 mg / ml",
+          "concentrationPerMl": 10,
+          "concentrationUnit": "mg",
+          "packageVolumeMl": 100,
+          "manufacturer": "Dane demonstracyjne",
+          "routes": ["IV"]
+        },
+        {
+          "id": "paracetamol-tablet-500mg",
+          "drugId": "paracetamol",
+          "tradeName": "Paracetamol Demo Tabletki",
+          "activeSubstance": "Paracetamol",
+          "form": "tabletki",
+          "strengthValue": 500,
+          "strengthUnit": "mg",
+          "concentrationText": "500 mg / tabletka",
+          "routes": ["PO"]
+        }
+      ]
+    },
+    {
+      "id": "ceftriakson",
+      "name": "Ceftriakson",
+      "activeSubstance": "Ceftriaxonum",
+      "products": [
+        {
+          "id": "ceftriakson-vial-1000mg",
+          "drugId": "ceftriakson",
+          "tradeName": "Ceftriakson Demo Fiolka",
+          "activeSubstance": "Ceftriaxonum",
+          "form": "proszek do sporządzania roztworu",
+          "strengthValue": 1000,
+          "strengthUnit": "mg",
+          "concentrationText": "1000 mg po rozpuszczeniu; wpisz stężenie użyte w obliczeniu",
+          "manufacturer": "Dane demonstracyjne",
+          "routes": ["IV", "IM"]
+        }
+      ]
+    },
+    {
+      "id": "furosemid",
+      "name": "Furosemid",
+      "activeSubstance": "Furosemidum",
+      "products": [
+        {
+          "id": "furosemid-amp-20mg-2ml",
+          "drugId": "furosemid",
+          "tradeName": "Furosemid Demo Ampułka",
+          "activeSubstance": "Furosemidum",
+          "form": "ampułka",
+          "strengthValue": 20,
+          "strengthUnit": "mg",
+          "concentrationText": "20 mg / 2 ml",
+          "concentrationPerMl": 10,
+          "concentrationUnit": "mg",
+          "packageVolumeMl": 2,
+          "routes": ["IV", "IM"]
+        }
+      ]
+    },
+    {
+      "id": "enoksaparyna",
+      "name": "Enoksaparyna",
+      "activeSubstance": "Enoxaparinum natricum",
+      "products": [
+        {
+          "id": "enoksaparyna-syringe-demo",
+          "drugId": "enoksaparyna",
+          "tradeName": "Enoksaparyna Demo Ampułkostrzykawka",
+          "activeSubstance": "Enoxaparinum natricum",
+          "form": "ampułkostrzykawka",
+          "concentrationText": "demonstracyjne j.m. / ml",
+          "unitsPerMl": 10000,
+          "packageVolumeMl": 0.4,
+          "routes": ["SC"]
+        }
+      ]
+    },
+    {
+      "id": "insulina",
+      "name": "Insulina",
+      "activeSubstance": "Insulinum",
+      "products": [
+        {
+          "id": "insulina-vial-100u-ml",
+          "drugId": "insulina",
+          "tradeName": "Insulina Demo Fiolka",
+          "activeSubstance": "Insulinum",
+          "form": "roztwór do wstrzykiwań",
+          "concentrationText": "100 j.m. / ml",
+          "unitsPerMl": 100,
+          "packageVolumeMl": 10,
+          "routes": ["SC", "IV"]
+        }
+      ]
+    },
+    {
+      "id": "heparyna",
+      "name": "Heparyna",
+      "activeSubstance": "Heparinum natricum",
+      "products": [
+        {
+          "id": "heparyna-vial-5000u-ml",
+          "drugId": "heparyna",
+          "tradeName": "Heparyna Demo Fiolka",
+          "activeSubstance": "Heparinum natricum",
+          "form": "roztwór do wstrzykiwań",
+          "concentrationText": "5000 j.m. / ml",
+          "unitsPerMl": 5000,
+          "packageVolumeMl": 5,
+          "routes": ["IV", "SC"]
+        }
+      ]
+    },
+    {
+      "id": "metamizol",
+      "name": "Metamizol",
+      "activeSubstance": "Metamizolum natricum",
+      "products": [
+        {
+          "id": "metamizol-amp-1000mg-2ml",
+          "drugId": "metamizol",
+          "tradeName": "Metamizol Demo Ampułka",
+          "activeSubstance": "Metamizolum natricum",
+          "form": "ampułka",
+          "strengthValue": 1000,
+          "strengthUnit": "mg",
+          "concentrationText": "1000 mg / 2 ml",
+          "concentrationPerMl": 500,
+          "concentrationUnit": "mg",
+          "packageVolumeMl": 2,
+          "routes": ["IV", "IM"]
+        }
+      ]
+    },
+    {
+      "id": "pantoprazol",
+      "name": "Pantoprazol",
+      "activeSubstance": "Pantoprazolum",
+      "products": [
+        {
+          "id": "pantoprazol-vial-40mg",
+          "drugId": "pantoprazol",
+          "tradeName": "Pantoprazol Demo Fiolka",
+          "activeSubstance": "Pantoprazolum",
+          "form": "proszek do sporządzania roztworu",
+          "strengthValue": 40,
+          "strengthUnit": "mg",
+          "concentrationText": "40 mg po rozpuszczeniu; wpisz stężenie użyte w obliczeniu",
+          "routes": ["IV"]
+        }
+      ]
+    }
+  ]
+}

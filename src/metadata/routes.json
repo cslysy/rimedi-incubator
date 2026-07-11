@@ -1,0 +1,10 @@
+[
+  { "code": "IV", "label": "Dożylnie", "display": "Dożylnie (IV)" },
+  { "code": "IM", "label": "Domięśniowo", "display": "Domięśniowo (IM)" },
+  { "code": "SC", "label": "Podskórnie", "display": "Podskórnie (SC)" },
+  { "code": "PO", "label": "Doustnie", "display": "Doustnie (PO)" },
+  { "code": "SL", "label": "Podjęzykowo", "display": "Podjęzykowo (SL)" },
+  { "code": "PR", "label": "Doodbytniczo", "display": "Doodbytniczo (PR)" },
+  { "code": "INH", "label": "Wziewnie", "display": "Wziewnie (INH)" },
+  { "code": "TOP", "label": "Miejscowo", "display": "Miejscowo (TOP)" }
+]
