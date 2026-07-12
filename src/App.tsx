@@ -56,8 +56,11 @@ export function App() {
 
   useLayoutEffect(() => {
     const selectionModeActive = selectedDrug !== null;
+    const searchPageActive = !selectionModeActive;
     document.documentElement.classList.toggle("selectionModeActive", selectionModeActive);
     document.body.classList.toggle("selectionModeActive", selectionModeActive);
+    document.documentElement.classList.toggle("searchPageActive", searchPageActive);
+    document.body.classList.toggle("searchPageActive", searchPageActive);
 
     if (selectionModeActive) {
       scrollToTopAfterNavigation();
@@ -67,6 +70,11 @@ export function App() {
       if (selectionModeActive) {
         document.documentElement.classList.remove("selectionModeActive");
         document.body.classList.remove("selectionModeActive");
+      }
+
+      if (searchPageActive) {
+        document.documentElement.classList.remove("searchPageActive");
+        document.body.classList.remove("searchPageActive");
       }
     };
   }, [selectedDrug]);
