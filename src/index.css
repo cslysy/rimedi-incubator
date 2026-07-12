@@ -1087,7 +1087,7 @@ button {
 
 .minimalSelection {
   padding-top: 30px;
-  padding-bottom: env(safe-area-inset-bottom);
+  padding-bottom: 0;
 }
 
 .minimalSelection h2 {
@@ -1095,7 +1095,11 @@ button {
 }
 
 .substituteSection {
-  padding-top: 38px;
+  padding-top: 18px;
+}
+
+.selectionPage > .minimalSelection:last-child {
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 .emptySubstitutes {
