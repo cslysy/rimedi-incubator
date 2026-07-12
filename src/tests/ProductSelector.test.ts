@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import {
   groupProductsByTradeName,
-  groupProductsByVariant
+  groupProductsByVariant,
+  groupVariantsByForm
 } from "../components/ProductSelector";
 import type { DrugProduct } from "../types";
 
@@ -48,6 +49,28 @@ describe("ProductSelector", () => {
     expect(variants[0].products.map((product) => product.id)).toEqual([
       "relanium-original",
       "relanium-import"
+    ]);
+  });
+
+  it("groups available strengths under their pharmaceutical form", () => {
+    const injection = createProduct("relanium-injection", "Relanium", "5 mg/ml");
+    injection.form = "Roztwór do wstrzykiwań";
+    const tabletFive = createProduct("relanium-5", "Relanium", "5 mg");
+    tabletFive.strengthValue = 5;
+    const tabletTwo = createProduct("relanium-2", "Relanium", "2 mg");
+    tabletTwo.strengthValue = 2;
+
+    const groups = groupVariantsByForm(
+      groupProductsByVariant([tabletFive, injection, tabletTwo])
+    );
+
+    expect(groups.map((group) => group.form)).toEqual([
+      "Roztwór do wstrzykiwań",
+      "Tabletki"
+    ]);
+    expect(groups[1].variants.map((variant) => variant.concentrationText)).toEqual([
+      "2 mg",
+      "5 mg"
     ]);
   });
 });

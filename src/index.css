@@ -749,6 +749,50 @@ p {
   font-size: 0.9rem;
 }
 
+.formVariantGroup {
+  gap: 10px;
+}
+
+.variantStrengths {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+}
+
+.minimalVariant .variantStrength {
+  color: #475569;
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+.variantStrength:not(:last-child)::after {
+  color: #94a3b8;
+  content: ",\00a0";
+}
+
+.variantStrengthButton {
+  display: inline-flex;
+  min-height: 38px;
+  padding: 7px 12px;
+  align-items: center;
+  border: 1px solid #dbe3ea;
+  border-radius: 19px;
+  color: #334155;
+  background: #f8fafc;
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.variantStrengthButton + .variantStrengthButton {
+  margin-left: 8px;
+}
+
+.variantStrengthButton:active {
+  color: #0f766e;
+  background: #f0fdfa;
+}
+
 @media (min-width: 680px) {
   .minimalSearchPage {
     padding-inline: 32px;

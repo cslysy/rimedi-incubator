@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import type { DrugProduct } from "../types";
 import {
   getNavigationState,
@@ -23,6 +23,11 @@ export interface ProductVariantGroup {
   form: string;
   representative: DrugProduct;
   products: DrugProduct[];
+}
+
+export interface ProductFormGroup {
+  form: string;
+  variants: ProductVariantGroup[];
 }
 
 function normalizeVariantPart(value: string): string {
@@ -77,6 +82,37 @@ export function groupProductsByVariant(products: DrugProduct[]): ProductVariantG
   return [...groups.values()];
 }
 
+export function groupVariantsByForm(variants: ProductVariantGroup[]): ProductFormGroup[] {
+  const groups = new Map<string, ProductFormGroup>();
+
+  for (const variant of variants) {
+    const key = normalizeVariantPart(variant.form);
+    const existingGroup = groups.get(key);
+
+    if (existingGroup) {
+      existingGroup.variants.push(variant);
+    } else {
+      groups.set(key, { form: variant.form, variants: [variant] });
+    }
+  }
+
+  return [...groups.values()]
+    .map((group) => ({
+      ...group,
+      variants: [...group.variants].sort((left, right) => {
+        const leftStrength = left.representative.strengthValue;
+        const rightStrength = right.representative.strengthValue;
+
+        if (leftStrength !== undefined && rightStrength !== undefined && leftStrength !== rightStrength) {
+          return leftStrength - rightStrength;
+        }
+
+        return left.concentrationText.localeCompare(right.concentrationText, "pl-PL", { numeric: true });
+      })
+    }))
+    .sort((left, right) => left.form.localeCompare(right.form, "pl-PL"));
+}
+
 export function ProductSelector({
   products,
   activeSubstance,
@@ -92,6 +128,10 @@ export function ProductSelector({
   const selectedVariants = useMemo(
     () => (selectedGroup ? groupProductsByVariant(selectedGroup.products) : []),
     [selectedGroup]
+  );
+  const selectedFormGroups = useMemo(
+    () => groupVariantsByForm(selectedVariants),
+    [selectedVariants]
   );
   const displayedActiveSubstance =
     activeSubstance ?? selectedGroup?.products[0]?.activeSubstance ?? products[0]?.activeSubstance ?? "-";
@@ -127,6 +167,12 @@ export function ProductSelector({
     return () => window.removeEventListener("popstate", handlePopState);
   }, [products, useBrowserHistory]);
 
+  useLayoutEffect(() => {
+    if (selectedTradeName) {
+      scrollToTopAfterNavigation();
+    }
+  }, [selectedTradeName]);
+
   function selectTradeName(group: ProductNameGroup): void {
     setSelectedTradeName(group.tradeName);
 
@@ -136,7 +182,6 @@ export function ProductSelector({
         drugId: group.products[0].drugId,
         tradeName: group.tradeName
       });
-      scrollToTopAfterNavigation();
     }
   }
 
@@ -153,30 +198,31 @@ export function ProductSelector({
         <section className="minimalSelection" aria-labelledby="product-dose-selector-title">
           <h2 id="product-dose-selector-title">Dostępne dawki i postacie</h2>
           <div className="minimalResultList variantList">
-            {selectedVariants.map((variant) => {
-              const product = variant.representative;
-              const content = (
-                <>
-                  <strong>{variant.concentrationText || "Brak danych o mocy"}</strong>
-                  <span>{variant.form}</span>
-                </>
-              );
+            {selectedFormGroups.map((formGroup) => (
+              <article key={formGroup.form} className="minimalVariant formVariantGroup">
+                <strong>{formGroup.form}</strong>
+                <div className="variantStrengths">
+                  {formGroup.variants.map((variant) => {
+                    const strength = variant.concentrationText || "Brak danych o mocy";
 
-              return onSelect ? (
-                <button
-                  key={product.id}
-                  type="button"
-                  className="minimalVariant"
-                  onClick={() => onSelect(product)}
-                >
-                  {content}
-                </button>
-              ) : (
-                <article key={product.id} className="minimalVariant">
-                  {content}
-                </article>
-              );
-            })}
+                    return onSelect ? (
+                      <button
+                        key={variant.representative.id}
+                        type="button"
+                        className="variantStrengthButton"
+                        onClick={() => onSelect(variant.representative)}
+                      >
+                        {strength}
+                      </button>
+                    ) : (
+                      <span key={variant.representative.id} className="variantStrength">
+                        {strength}
+                      </span>
+                    );
+                  })}
+                </div>
+              </article>
+            ))}
           </div>
         </section>
 

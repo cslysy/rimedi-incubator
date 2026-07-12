@@ -59,7 +59,20 @@ export function scrollToTopAfterNavigation(): void {
     window.requestAnimationFrame(resetScroll);
   });
 
-  // Safari przywraca przesunięcie strony dopiero po schowaniu klawiatury
-  // i ponownym rozszerzeniu visual viewport.
-  [100, 300, 600].forEach((delay) => window.setTimeout(resetScroll, delay));
+  const viewport = window.visualViewport;
+  const handleViewportChange = (): void => {
+    window.requestAnimationFrame(resetScroll);
+  };
+
+  viewport?.addEventListener("resize", handleViewportChange, { passive: true });
+  viewport?.addEventListener("scroll", handleViewportChange, { passive: true });
+
+  // W trybie standalone iOS potrafi przywrócić przesunięcie dopiero po
+  // zakończeniu animacji klawiatury i rozszerzeniu visual viewport.
+  [100, 300, 600, 900, 1200].forEach((delay) => window.setTimeout(resetScroll, delay));
+
+  window.setTimeout(() => {
+    viewport?.removeEventListener("resize", handleViewportChange);
+    viewport?.removeEventListener("scroll", handleViewportChange);
+  }, 1250);
 }

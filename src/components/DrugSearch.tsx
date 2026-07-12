@@ -103,7 +103,10 @@ export function DrugSearch({ query, onQueryChange, onSelect }: DrugSearchProps =
                   key={`${result.drug.id}:${result.matchedTradeName ?? "substance"}`}
                   type="button"
                   className={`minimalResultButton${result.matchedTradeName ? " tradeNameSearchResult" : ""}`}
-                  onClick={() => onSelect(result.drug, result.matchedTradeName)}
+                  onClick={() => {
+                    inputRef.current?.blur();
+                    onSelect(result.drug, result.matchedTradeName);
+                  }}
                 >
                   {result.matchedTradeName ? (
                     <>
