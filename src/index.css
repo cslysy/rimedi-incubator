@@ -993,6 +993,14 @@ button {
 }
 
 @media (max-width: 679px) {
+  .minimalSearchPage:not(.selectionPage) {
+    position: fixed;
+    inset: 0;
+    height: 100dvh;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
   html.selectionModeActive,
   html.selectionModeActive body {
     height: 100%;
