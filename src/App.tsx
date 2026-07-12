@@ -85,6 +85,34 @@ export function App() {
     };
   }, [selectedDrug]);
 
+  useEffect(() => {
+    if (selectedDrug !== null) {
+      return;
+    }
+
+    let resetFrame = 0;
+
+    function keepSearchViewportFixed(): void {
+      if (window.scrollX === 0 && window.scrollY === 0) {
+        return;
+      }
+
+      window.cancelAnimationFrame(resetFrame);
+      resetFrame = window.requestAnimationFrame(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      });
+    }
+
+    window.addEventListener("scroll", keepSearchViewportFixed, { passive: true });
+    window.visualViewport?.addEventListener("scroll", keepSearchViewportFixed, { passive: true });
+
+    return () => {
+      window.cancelAnimationFrame(resetFrame);
+      window.removeEventListener("scroll", keepSearchViewportFixed);
+      window.visualViewport?.removeEventListener("scroll", keepSearchViewportFixed);
+    };
+  }, [selectedDrug]);
+
   function selectDrug(drug: Drug, matchedTradeName?: string): void {
     if (matchedTradeName) {
       pushNavigationState({
