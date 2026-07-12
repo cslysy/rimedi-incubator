@@ -62,8 +62,14 @@ export function App() {
     document.documentElement.classList.toggle("searchPageActive", searchPageActive);
     document.body.classList.toggle("searchPageActive", searchPageActive);
 
-    if (selectionModeActive) {
-      scrollToTopAfterNavigation();
+    scrollToTopAfterNavigation();
+
+    if (searchPageActive) {
+      document.querySelector<HTMLElement>(".searchResultsArea")?.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "auto"
+      });
     }
 
     return () => {
