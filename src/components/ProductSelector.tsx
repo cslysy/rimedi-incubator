@@ -8,6 +8,7 @@ import {
 
 interface ProductSelectorProps {
   products: DrugProduct[];
+  activeSubstance?: string;
   onSelect?: (product: DrugProduct) => void;
   useBrowserHistory?: boolean;
 }
@@ -76,7 +77,12 @@ export function groupProductsByVariant(products: DrugProduct[]): ProductVariantG
   return [...groups.values()];
 }
 
-export function ProductSelector({ products, onSelect, useBrowserHistory = false }: ProductSelectorProps) {
+export function ProductSelector({
+  products,
+  activeSubstance,
+  onSelect,
+  useBrowserHistory = false
+}: ProductSelectorProps) {
   const [selectedTradeName, setSelectedTradeName] = useState<string | null>(() => {
     const navigation = useBrowserHistory ? getNavigationState() : undefined;
     return navigation?.level === "product" ? navigation.tradeName : null;
@@ -87,6 +93,11 @@ export function ProductSelector({ products, onSelect, useBrowserHistory = false 
     () => (selectedGroup ? groupProductsByVariant(selectedGroup.products) : []),
     [selectedGroup]
   );
+  const displayedActiveSubstance =
+    activeSubstance ?? selectedGroup?.products[0]?.activeSubstance ?? products[0]?.activeSubstance ?? "-";
+  const substituteGroups = selectedGroup
+    ? productGroups.filter((group) => group.tradeName !== selectedGroup.tradeName)
+    : [];
 
   useEffect(() => {
     if (!useBrowserHistory) {
@@ -131,53 +142,85 @@ export function ProductSelector({ products, onSelect, useBrowserHistory = false 
 
   if (selectedGroup) {
     return (
-      <section className="minimalSelection" aria-labelledby="product-dose-selector-title">
-        <h2 id="product-dose-selector-title">{selectedGroup.tradeName}</h2>
-        <div className="minimalResultList variantList">
-          {selectedVariants.map((variant) => {
-            const product = variant.representative;
-            const content = (
-              <>
-                <strong>{variant.concentrationText || "Brak danych o mocy"}</strong>
-                <span>{variant.form}</span>
-              </>
-            );
+      <>
+        <header className="productIdentity">
+          <h1 className="substanceTitle productTradeTitle">{selectedGroup.tradeName}</h1>
+          <p className="productSubstance">
+            ({displayedActiveSubstance === "-" ? "Brak danych o substancji" : displayedActiveSubstance})
+          </p>
+        </header>
 
-            return onSelect ? (
-              <button
-                key={product.id}
-                type="button"
-                className="minimalVariant"
-                onClick={() => onSelect(product)}
-              >
-                {content}
-              </button>
-            ) : (
-              <article key={product.id} className="minimalVariant">
-                {content}
-              </article>
-            );
-          })}
-        </div>
-      </section>
+        <section className="minimalSelection" aria-labelledby="product-dose-selector-title">
+          <h2 id="product-dose-selector-title">Dostępne dawki i postacie</h2>
+          <div className="minimalResultList variantList">
+            {selectedVariants.map((variant) => {
+              const product = variant.representative;
+              const content = (
+                <>
+                  <strong>{variant.concentrationText || "Brak danych o mocy"}</strong>
+                  <span>{variant.form}</span>
+                </>
+              );
+
+              return onSelect ? (
+                <button
+                  key={product.id}
+                  type="button"
+                  className="minimalVariant"
+                  onClick={() => onSelect(product)}
+                >
+                  {content}
+                </button>
+              ) : (
+                <article key={product.id} className="minimalVariant">
+                  {content}
+                </article>
+              );
+            })}
+          </div>
+        </section>
+
+        <section className="minimalSelection substituteSection" aria-labelledby="substitute-selector-title">
+          <h2 id="substitute-selector-title">Zamienniki</h2>
+          {substituteGroups.length > 0 ? (
+            <div className="minimalResultList tradeNameList">
+              {substituteGroups.map((group) => (
+                <button
+                  key={group.tradeName}
+                  type="button"
+                  className="minimalResultButton"
+                  onClick={() => selectTradeName(group)}
+                >
+                  {group.tradeName}
+                </button>
+              ))}
+            </div>
+          ) : (
+            <p className="emptySubstitutes">Brak dostępnych zamienników</p>
+          )}
+        </section>
+      </>
     );
   }
 
   return (
-    <section className="minimalSelection" aria-labelledby="product-selector-title">
-      <h2 id="product-selector-title">Nazwy handlowe</h2>
-      <div className="minimalResultList tradeNameList">
-        {productGroups.map((group) => (
-          <button
-            key={group.tradeName}
-            type="button"
-            className="minimalResultButton"
-            onClick={() => selectTradeName(group)}
-          >
-            {group.tradeName}
-          </button>
-        ))}
-      </div>
-    </section>
+    <>
+      <h1 className="substanceTitle">{displayedActiveSubstance}</h1>
+      <section className="minimalSelection" aria-labelledby="product-selector-title">
+        <h2 id="product-selector-title">Nazwy handlowe</h2>
+        <div className="minimalResultList tradeNameList">
+          {productGroups.map((group) => (
+            <button
+              key={group.tradeName}
+              type="button"
+              className="minimalResultButton"
+              onClick={() => selectTradeName(group)}
+            >
+              {group.tradeName}
+            </button>
+          ))}
+        </div>
+      </section>
+    </>
   );
 }

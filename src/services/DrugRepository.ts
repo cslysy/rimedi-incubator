@@ -52,11 +52,7 @@ function buildSearchText(drug: Drug): string {
       drug.activeSubstance,
       ...drug.products.flatMap((product) => [
         product.tradeName,
-        product.activeSubstance,
-        product.form,
-        product.concentrationText,
-        product.manufacturer ?? "",
-        product.atcCode ?? ""
+        product.activeSubstance
       ])
     ].join(" ")
   );

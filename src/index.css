@@ -912,6 +912,29 @@ button {
   background: #f1f5f9;
 }
 
+.tradeNameSearchResult {
+  display: grid;
+  gap: 3px;
+}
+
+.tradeNameSearchResult strong {
+  font-size: 1rem;
+  font-weight: 650;
+}
+
+.matchedDrugName {
+  color: #475569;
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+.substituteCount {
+  margin-top: 2px;
+  color: #94a3b8;
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
 @media (hover: none), (pointer: coarse) {
   .tradeNameList .minimalResultButton:hover,
   .tradeNameList .minimalResultButton:focus,
@@ -1047,6 +1070,21 @@ button {
   overflow-wrap: anywhere;
 }
 
+.productIdentity {
+  margin-top: 28px;
+}
+
+.productTradeTitle {
+  margin: 0;
+}
+
+.productSubstance {
+  margin: 7px 0 0;
+  color: #64748b;
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
 .minimalSelection {
   padding-top: 30px;
   padding-bottom: env(safe-area-inset-bottom);
@@ -1054,6 +1092,16 @@ button {
 
 .minimalSelection h2 {
   font-size: 1rem;
+}
+
+.substituteSection {
+  padding-top: 38px;
+}
+
+.emptySubstitutes {
+  margin: 14px 0 0;
+  color: #94a3b8;
+  font-size: 0.9rem;
 }
 
 .inlineBackLink {

@@ -71,9 +71,18 @@ export function App() {
     };
   }, [selectedDrug]);
 
-  function selectDrug(drug: Drug): void {
+  function selectDrug(drug: Drug, matchedTradeName?: string): void {
+    if (matchedTradeName) {
+      pushNavigationState({
+        level: "product",
+        drugId: drug.id,
+        tradeName: matchedTradeName
+      });
+    } else {
+      pushNavigationState({ level: "drug", drugId: drug.id });
+    }
+
     setSelectedDrug(drug);
-    pushNavigationState({ level: "drug", drugId: drug.id });
   }
 
   function goBack(): void {
@@ -95,8 +104,11 @@ export function App() {
               <span aria-hidden="true">←</span> Wróć
             </button>
           </nav>
-          <h1 className="substanceTitle">{selectedDrug.activeSubstance}</h1>
-          <ProductSelector products={selectedDrug.products} useBrowserHistory />
+          <ProductSelector
+            products={selectedDrug.products}
+            activeSubstance={selectedDrug.activeSubstance}
+            useBrowserHistory
+          />
         </>
       ) : (
         <DrugSearch query={query} onQueryChange={setQuery} onSelect={selectDrug} />

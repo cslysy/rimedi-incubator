@@ -1,11 +1,12 @@
 import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { drugRepository } from "../services/DrugRepository";
 import type { Drug } from "../types";
+import { buildDrugSearchResults, formatSubstituteCount } from "../utils/drugSearchResults";
 
 interface DrugSearchProps {
   query?: string;
   onQueryChange?: (query: string) => void;
-  onSelect?: (drug: Drug) => void;
+  onSelect?: (drug: Drug, matchedTradeName?: string) => void;
 }
 
 const MAX_VISIBLE_RESULTS = 50;
@@ -16,7 +17,11 @@ export function DrugSearch({ query, onQueryChange, onSelect }: DrugSearchProps =
   const currentQuery = query ?? internalQuery;
   const trimmedQuery = currentQuery.trim();
   const results = useMemo(() => drugRepository.searchDrugs(currentQuery), [currentQuery]);
-  const visibleResults = results.slice(0, MAX_VISIBLE_RESULTS);
+  const searchResults = useMemo(
+    () => buildDrugSearchResults(results, currentQuery),
+    [currentQuery, results]
+  );
+  const visibleResults = searchResults.slice(0, MAX_VISIBLE_RESULTS);
   const isSearching = trimmedQuery.length > 0;
   const hasSearchQuery = trimmedQuery.length >= 2;
 
@@ -92,19 +97,34 @@ export function DrugSearch({ query, onQueryChange, onSelect }: DrugSearchProps =
 
         {visibleResults.length > 0 && (
           <div className="minimalResultList" aria-label="Wyniki wyszukiwania">
-            {visibleResults.map((drug) =>
+            {visibleResults.map((result) =>
               onSelect ? (
                 <button
-                  key={drug.id}
+                  key={`${result.drug.id}:${result.matchedTradeName ?? "substance"}`}
                   type="button"
-                  className="minimalResultButton"
-                  onClick={() => onSelect(drug)}
+                  className={`minimalResultButton${result.matchedTradeName ? " tradeNameSearchResult" : ""}`}
+                  onClick={() => onSelect(result.drug, result.matchedTradeName)}
                 >
-                  {drug.activeSubstance === "-" ? "Brak danych o substancji" : drug.activeSubstance}
+                  {result.matchedTradeName ? (
+                    <>
+                      <strong>{result.matchedTradeName}</strong>
+                      <span className="matchedDrugName">
+                        ({result.drug.activeSubstance === "-" ? "Brak danych o substancji" : result.drug.activeSubstance})
+                      </span>
+                      <span className="substituteCount">
+                        {formatSubstituteCount(result.substituteCount)}
+                      </span>
+                    </>
+                  ) : (
+                    result.drug.activeSubstance === "-" ? "Brak danych o substancji" : result.drug.activeSubstance
+                  )}
                 </button>
               ) : (
-                <article key={drug.id} className="minimalResultItem">
-                  <strong>{drug.name}</strong>
+                <article
+                  key={`${result.drug.id}:${result.matchedTradeName ?? "substance"}`}
+                  className="minimalResultItem"
+                >
+                  <strong>{result.matchedTradeName ?? result.drug.name}</strong>
                 </article>
               )
             )}

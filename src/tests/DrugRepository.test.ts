@@ -15,6 +15,7 @@ const sampleDrugs: Drug[] = [
         activeSubstance: "Furosemidum",
         form: "ampułka",
         concentrationText: "20 mg / 2 ml",
+        manufacturer: "Theramex Ireland Limited",
         routes: ["IV"],
         calculators: ["DOSE_TO_ML"],
         highRisk: false,
@@ -60,6 +61,12 @@ describe("DrugRepository", () => {
     const repository = new DrugRepository(sampleDrugs);
 
     expect(repository.searchDrugs("f")).toEqual([]);
+  });
+
+  it("nie wyszukuje po nazwie producenta ani innych metadanych produktu", () => {
+    const repository = new DrugRepository(sampleDrugs);
+
+    expect(repository.searchDrugs("relan")).toEqual([]);
   });
 
   it("składa dane produktu z metadanymi aplikacji", () => {
