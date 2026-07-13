@@ -1167,7 +1167,6 @@ button {
 .productIdentity ~ .minimalSelection {
   margin-top: 28px;
   padding-top: 24px;
-  border-top: 2px solid #e2e8f0;
 }
 
 .productIdentity ~ .minimalSelection h2 {
