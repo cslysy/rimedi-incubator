@@ -1171,7 +1171,7 @@ button {
 }
 
 .productIdentity ~ .minimalSelection h2 {
-  color: #334155;
+  color: #0f766e;
   font-size: 1.03rem;
   font-weight: 700;
   line-height: 1.35;
@@ -1180,6 +1180,10 @@ button {
 .productIdentity ~ .minimalSelection .minimalResultList,
 .productIdentity ~ .minimalSelection .emptySubstitutes {
   margin-top: 12px;
+}
+
+.productIdentity ~ .minimalSelection .minimalResultList > :last-child {
+  border-bottom: 0;
 }
 
 .detailedProductButton {
