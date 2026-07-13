@@ -104,12 +104,10 @@ export function App() {
     }
 
     window.addEventListener("scroll", keepSearchViewportFixed, { passive: true });
-    window.visualViewport?.addEventListener("scroll", keepSearchViewportFixed, { passive: true });
 
     return () => {
       window.cancelAnimationFrame(resetFrame);
       window.removeEventListener("scroll", keepSearchViewportFixed);
-      window.visualViewport?.removeEventListener("scroll", keepSearchViewportFixed);
     };
   }, [selectedDrug]);
 

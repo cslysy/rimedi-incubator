@@ -48,6 +48,32 @@ describe("buildDrugSearchResults", () => {
     expect(results).toEqual([{ drug: diazepam, substituteCount: 3 }]);
   });
 
+  it("pokazuje dokładne dopasowanie nazwy handlowej przed przypadkowym dopasowaniem w substancji", () => {
+    const pantoprazolum: Drug = {
+      id: "pantoprazolum",
+      name: "Pantoprazolum",
+      activeSubstance: "Pantoprazolum",
+      products: [product("ipp", "IPP"), product("ipp-20", "IPP 20")]
+    };
+    const hippocastani: Drug = {
+      id: "hippocastani",
+      name: "Hippocastani cortex",
+      activeSubstance: "Hippocastani cortex",
+      products: [product("aesculan", "Aesculan")]
+    };
+
+    const results = buildDrugSearchResults([hippocastani, pantoprazolum], "IPP");
+
+    expect(results[0]).toMatchObject({
+      drug: pantoprazolum,
+      matchedTradeName: "IPP"
+    });
+    expect(results[1]).toMatchObject({
+      drug: pantoprazolum,
+      matchedTradeName: "IPP 20"
+    });
+  });
+
   it("odmienia opis liczby zamienników", () => {
     expect(formatSubstituteCount(1)).toBe("1 dostępny zamiennik");
     expect(formatSubstituteCount(2)).toBe("2 dostępne zamienniki");
