@@ -1,6 +1,5 @@
 import { useEffect, useLayoutEffect, useMemo, useState } from "react";
-import routeData from "../metadata/routes.json";
-import type { AdministrationRoute, DrugProduct } from "../types";
+import type { DrugProduct } from "../types";
 import {
   getNavigationState,
   pushNavigationState,
@@ -30,8 +29,6 @@ export interface ProductFormGroup {
   form: string;
   variants: ProductVariantGroup[];
 }
-
-const routeDefinitions = routeData as AdministrationRoute[];
 
 function normalizeVariantPart(value: string): string {
   return value
@@ -121,26 +118,25 @@ export function arePotentialSubstitutes(
   candidateProducts: DrugProduct[]
 ): boolean {
   return selectedProducts.some((selectedProduct) =>
-    candidateProducts.some((candidateProduct) => {
-      if (normalizeVariantPart(selectedProduct.form) !== normalizeVariantPart(candidateProduct.form)) {
-        return false;
-      }
-
-      if (selectedProduct.routes.length === 0 || candidateProduct.routes.length === 0) {
-        return true;
-      }
-
-      return selectedProduct.routes.some((route) => candidateProduct.routes.includes(route));
-    })
+    candidateProducts.some(
+      (candidateProduct) =>
+        normalizeVariantPart(selectedProduct.form) === normalizeVariantPart(candidateProduct.form)
+    )
   );
 }
 
-export function getProductRouteLabels(products: DrugProduct[]): string[] {
-  const routeCodes = new Set(products.flatMap((product) => product.routes));
+export function getProductFormLabels(products: DrugProduct[]): string[] {
+  const forms = new Map<string, string>();
 
-  return routeDefinitions
-    .filter((route) => routeCodes.has(route.code))
-    .map((route) => route.label);
+  for (const product of products) {
+    const normalizedForm = normalizeVariantPart(product.form);
+
+    if (normalizedForm && !forms.has(normalizedForm)) {
+      forms.set(normalizedForm, product.form.trim());
+    }
+  }
+
+  return [...forms.values()].sort((left, right) => left.localeCompare(right, "pl-PL"));
 }
 
 export function ProductSelector({
@@ -274,13 +270,13 @@ export function ProductSelector({
                 <button
                   key={group.tradeName}
                   type="button"
-                  className="minimalResultButton routedProductButton"
+                  className="minimalResultButton detailedProductButton"
                   onClick={() => selectTradeName(group)}
                 >
                   <span>{group.tradeName}</span>
-                  {getProductRouteLabels(group.products).length > 0 && (
-                    <span className="productRouteSummary">
-                      {getProductRouteLabels(group.products).join(" · ")}
+                  {getProductFormLabels(group.products).length > 0 && (
+                    <span className="productFormSummary">
+                      {getProductFormLabels(group.products).join(" · ")}
                     </span>
                   )}
                 </button>
@@ -299,13 +295,13 @@ export function ProductSelector({
                 <button
                   key={group.tradeName}
                   type="button"
-                  className="minimalResultButton routedProductButton"
+                  className="minimalResultButton detailedProductButton"
                   onClick={() => selectTradeName(group)}
                 >
                   <span>{group.tradeName}</span>
-                  {getProductRouteLabels(group.products).length > 0 && (
-                    <span className="productRouteSummary">
-                      {getProductRouteLabels(group.products).join(" · ")}
+                  {getProductFormLabels(group.products).length > 0 && (
+                    <span className="productFormSummary">
+                      {getProductFormLabels(group.products).join(" · ")}
                     </span>
                   )}
                 </button>

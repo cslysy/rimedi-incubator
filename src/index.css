@@ -1164,12 +1164,12 @@ button {
   padding-top: 22px;
 }
 
-.routedProductButton {
+.detailedProductButton {
   display: grid;
   gap: 4px;
 }
 
-.productRouteSummary {
+.productFormSummary {
   color: #94a3b8;
   font-size: 0.76rem;
   font-weight: 500;

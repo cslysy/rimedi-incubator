@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   arePotentialSubstitutes,
-  getProductRouteLabels,
+  getProductFormLabels,
   groupProductsByTradeName,
   groupProductsByVariant,
   groupVariantsByForm
@@ -83,7 +83,7 @@ describe("ProductSelector", () => {
     expect(arePotentialSubstitutes([selected], [otherStrength])).toBe(true);
   });
 
-  it("does not treat different forms or administration routes as potential substitutes", () => {
+  it("uses pharmaceutical form, but not administration route, to identify potential substitutes", () => {
     const tablet = createProduct("tablet", "Tablet", "5 mg");
     const injection = createProduct("injection", "Injection", "5 mg/ml");
     injection.form = "Roztwór do wstrzykiwań";
@@ -92,17 +92,20 @@ describe("ProductSelector", () => {
     topicalTablet.routes = ["TOP"];
 
     expect(arePotentialSubstitutes([tablet], [injection])).toBe(false);
-    expect(arePotentialSubstitutes([tablet], [topicalTablet])).toBe(false);
+    expect(arePotentialSubstitutes([tablet], [topicalTablet])).toBe(true);
   });
 
-  it("returns unique administration route labels for a trade name", () => {
-    const oral = createProduct("oral", "Medicine", "5 mg");
-    const oralAndIntravenous = createProduct("mixed", "Medicine", "10 mg");
-    oralAndIntravenous.routes = ["PO", "IV"];
+  it("returns unique pharmaceutical forms for a trade name", () => {
+    const cream = createProduct("cream", "Medicine", "5 mg");
+    cream.form = "Krem";
+    const duplicateCream = createProduct("cream-duplicate", "Medicine", "10 mg");
+    duplicateCream.form = " krem ";
+    const spray = createProduct("spray", "Medicine", "20 mg/ml");
+    spray.form = "Aerozol na skórę, roztwór";
 
-    expect(getProductRouteLabels([oral, oralAndIntravenous])).toEqual([
-      "Dożylnie",
-      "Doustnie"
+    expect(getProductFormLabels([cream, duplicateCream, spray])).toEqual([
+      "Aerozol na skórę, roztwór",
+      "Krem"
     ]);
   });
 });
