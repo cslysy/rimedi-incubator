@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   arePotentialSubstitutes,
+  getProductRouteLabels,
   groupProductsByTradeName,
   groupProductsByVariant,
   groupVariantsByForm
@@ -92,5 +93,16 @@ describe("ProductSelector", () => {
 
     expect(arePotentialSubstitutes([tablet], [injection])).toBe(false);
     expect(arePotentialSubstitutes([tablet], [topicalTablet])).toBe(false);
+  });
+
+  it("returns unique administration route labels for a trade name", () => {
+    const oral = createProduct("oral", "Medicine", "5 mg");
+    const oralAndIntravenous = createProduct("mixed", "Medicine", "10 mg");
+    oralAndIntravenous.routes = ["PO", "IV"];
+
+    expect(getProductRouteLabels([oral, oralAndIntravenous])).toEqual([
+      "Dożylnie",
+      "Doustnie"
+    ]);
   });
 });
