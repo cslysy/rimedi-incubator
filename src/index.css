@@ -1169,6 +1169,10 @@ button {
   padding-top: 0;
 }
 
+.productIdentity ~ .minimalSelection + .minimalSelection {
+  margin-top: 0;
+}
+
 .productIdentity ~ .minimalSelection h2 {
   color: #0f766e;
   font-size: 1.03rem;
