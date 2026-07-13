@@ -91,13 +91,23 @@ async function isTestVersionAvailable(): Promise<boolean> {
 }
 
 function renderApplication(): void {
-  rootElement.classList.add("appIntro");
+  const shouldAnimateStartup = !startupDismissalStarted;
+
+  if (shouldAnimateStartup) {
+    rootElement.classList.add("appIntro");
+  } else {
+    rootElement.classList.remove("appIntro", "isRevealing", "appEntering");
+  }
+
   root.render(
     <StrictMode>
       <App />
     </StrictMode>
   );
-  dismissStartupSplash(true);
+
+  if (shouldAnimateStartup) {
+    dismissStartupSplash(true);
+  }
 }
 
 let availabilityCheckSequence = 0;
