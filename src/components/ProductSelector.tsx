@@ -325,10 +325,15 @@ export function ProductSelector({
             <button
               key={group.tradeName}
               type="button"
-              className="minimalResultButton"
+              className="minimalResultButton detailedProductButton"
               onClick={() => selectTradeName(group)}
             >
-              {group.tradeName}
+              <span>{group.tradeName}</span>
+              {getProductFormLabels(group.products).length > 0 && (
+                <span className="productFormSummary">
+                  {getProductFormLabels(group.products).join(" · ")}
+                </span>
+              )}
             </button>
           ))}
         </div>
