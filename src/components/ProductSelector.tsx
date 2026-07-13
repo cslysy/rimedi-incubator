@@ -113,6 +113,25 @@ export function groupVariantsByForm(variants: ProductVariantGroup[]): ProductFor
     .sort((left, right) => left.form.localeCompare(right.form, "pl-PL"));
 }
 
+export function arePotentialSubstitutes(
+  selectedProducts: DrugProduct[],
+  candidateProducts: DrugProduct[]
+): boolean {
+  return selectedProducts.some((selectedProduct) =>
+    candidateProducts.some((candidateProduct) => {
+      if (normalizeVariantPart(selectedProduct.form) !== normalizeVariantPart(candidateProduct.form)) {
+        return false;
+      }
+
+      if (selectedProduct.routes.length === 0 || candidateProduct.routes.length === 0) {
+        return true;
+      }
+
+      return selectedProduct.routes.some((route) => candidateProduct.routes.includes(route));
+    })
+  );
+}
+
 export function ProductSelector({
   products,
   activeSubstance,
@@ -135,8 +154,18 @@ export function ProductSelector({
   );
   const displayedActiveSubstance =
     activeSubstance ?? selectedGroup?.products[0]?.activeSubstance ?? products[0]?.activeSubstance ?? "-";
-  const substituteGroups = selectedGroup
+  const otherProductGroups = selectedGroup
     ? productGroups.filter((group) => group.tradeName !== selectedGroup.tradeName)
+    : [];
+  const potentialSubstituteGroups = selectedGroup
+    ? otherProductGroups.filter((group) =>
+        arePotentialSubstitutes(selectedGroup.products, group.products)
+      )
+    : [];
+  const sameSubstanceGroups = selectedGroup
+    ? otherProductGroups.filter(
+        (group) => !arePotentialSubstitutes(selectedGroup.products, group.products)
+      )
     : [];
 
   useEffect(() => {
@@ -227,10 +256,10 @@ export function ProductSelector({
         </section>
 
         <section className="minimalSelection substituteSection" aria-labelledby="substitute-selector-title">
-          <h2 id="substitute-selector-title">Zamienniki</h2>
-          {substituteGroups.length > 0 ? (
+          <h2 id="substitute-selector-title">Potencjalne zamienniki</h2>
+          {potentialSubstituteGroups.length > 0 ? (
             <div className="minimalResultList tradeNameList">
-              {substituteGroups.map((group) => (
+              {potentialSubstituteGroups.map((group) => (
                 <button
                   key={group.tradeName}
                   type="button"
@@ -242,7 +271,27 @@ export function ProductSelector({
               ))}
             </div>
           ) : (
-            <p className="emptySubstitutes">Brak dostępnych zamienników</p>
+            <p className="emptySubstitutes">Brak potencjalnych zamienników</p>
+          )}
+        </section>
+
+        <section className="minimalSelection sameSubstanceSection" aria-labelledby="same-substance-title">
+          <h2 id="same-substance-title">Inne leki z tą samą substancją czynną</h2>
+          {sameSubstanceGroups.length > 0 ? (
+            <div className="minimalResultList tradeNameList">
+              {sameSubstanceGroups.map((group) => (
+                <button
+                  key={group.tradeName}
+                  type="button"
+                  className="minimalResultButton"
+                  onClick={() => selectTradeName(group)}
+                >
+                  {group.tradeName}
+                </button>
+              ))}
+            </div>
+          ) : (
+            <p className="emptySubstitutes">Brak innych leków</p>
           )}
         </section>
       </>

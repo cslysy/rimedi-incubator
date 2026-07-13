@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  arePotentialSubstitutes,
   groupProductsByTradeName,
   groupProductsByVariant,
   groupVariantsByForm
@@ -72,5 +73,24 @@ describe("ProductSelector", () => {
       "2 mg",
       "5 mg"
     ]);
+  });
+
+  it("treats matching forms and routes as potential substitutes regardless of strength", () => {
+    const selected = createProduct("selected", "Selected", "5 mg");
+    const otherStrength = createProduct("candidate", "Candidate", "10 mg");
+
+    expect(arePotentialSubstitutes([selected], [otherStrength])).toBe(true);
+  });
+
+  it("does not treat different forms or administration routes as potential substitutes", () => {
+    const tablet = createProduct("tablet", "Tablet", "5 mg");
+    const injection = createProduct("injection", "Injection", "5 mg/ml");
+    injection.form = "Roztwór do wstrzykiwań";
+    injection.routes = ["IV"];
+    const topicalTablet = createProduct("topical", "Topical", "5 mg");
+    topicalTablet.routes = ["TOP"];
+
+    expect(arePotentialSubstitutes([tablet], [injection])).toBe(false);
+    expect(arePotentialSubstitutes([tablet], [topicalTablet])).toBe(false);
   });
 });

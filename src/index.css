@@ -1160,6 +1160,10 @@ button {
   padding-top: 18px;
 }
 
+.sameSubstanceSection {
+  padding-top: 22px;
+}
+
 .selectionPage > .minimalSelection:last-child {
   padding-bottom: env(safe-area-inset-bottom);
 }
