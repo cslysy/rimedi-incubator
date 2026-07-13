@@ -1164,6 +1164,24 @@ button {
   padding-top: 22px;
 }
 
+.productIdentity ~ .minimalSelection {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 2px solid #e2e8f0;
+}
+
+.productIdentity ~ .minimalSelection h2 {
+  color: #334155;
+  font-size: 1.03rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.productIdentity ~ .minimalSelection .minimalResultList,
+.productIdentity ~ .minimalSelection .emptySubstitutes {
+  margin-top: 12px;
+}
+
 .detailedProductButton {
   display: grid;
   gap: 4px;
