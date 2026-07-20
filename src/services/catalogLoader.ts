@@ -4,6 +4,7 @@ import {
 } from "./DrugRepository";
 
 export const SUPPORTED_CATALOG_SCHEMA_VERSION = 1;
+const VALIDATED_CATALOG_STORAGE_KEY = "rimedi.validated-catalog.v1";
 
 export interface CatalogManifest {
   schemaVersion: number;
@@ -24,8 +25,60 @@ export interface LoadedCatalog {
 
 let activeLoad: Promise<LoadedCatalog> | null = null;
 
+interface CatalogLoadOptions {
+  forceReload?: boolean;
+  onDownloadRequired?: () => void;
+}
+
 function isNonEmptyString(value: unknown): value is string {
   return typeof value === "string" && value.length > 0;
+}
+
+function readValidatedCatalog(): CatalogManifest | null {
+  if (typeof localStorage === "undefined") {
+    return null;
+  }
+
+  try {
+    return validateCatalogManifest(
+      JSON.parse(localStorage.getItem(VALIDATED_CATALOG_STORAGE_KEY) ?? "null")
+    );
+  } catch {
+    return null;
+  }
+}
+
+function saveValidatedCatalog(manifest: CatalogManifest): void {
+  try {
+    localStorage.setItem(VALIDATED_CATALOG_STORAGE_KEY, JSON.stringify(manifest));
+  } catch {
+    // Brak miejsca lub zablokowany localStorage nie może zatrzymać aplikacji.
+  }
+}
+
+function catalogsMatch(left: CatalogManifest | null, right: CatalogManifest): boolean {
+  return (
+    left?.schemaVersion === right.schemaVersion &&
+    left.catalogVersion === right.catalogVersion &&
+    left.catalogUrl === right.catalogUrl &&
+    left.sha256.toLowerCase() === right.sha256.toLowerCase()
+  );
+}
+
+async function hasCachedCatalogResponse(catalogUrl: URL): Promise<boolean> {
+  if (typeof caches === "undefined") {
+    return false;
+  }
+
+  try {
+    return (await caches.match(catalogUrl)) !== undefined;
+  } catch {
+    return false;
+  }
+}
+
+export function hasValidatedCatalogReference(): boolean {
+  return readValidatedCatalog() !== null;
 }
 
 export function validateCatalogManifest(value: unknown): CatalogManifest {
@@ -84,7 +137,10 @@ function notifyServiceWorker(catalogUrl: URL): void {
   });
 }
 
-async function fetchAndInstallCatalog(forceNetwork: boolean): Promise<LoadedCatalog> {
+async function fetchAndInstallCatalog({
+  forceReload = false,
+  onDownloadRequired
+}: CatalogLoadOptions): Promise<LoadedCatalog> {
   const baseUrl = new URL(import.meta.env.BASE_URL, window.location.href);
   const manifestUrl = new URL("catalog/rpl-catalog-manifest.json", baseUrl);
   const manifestResponse = await fetch(manifestUrl, {
@@ -99,12 +155,26 @@ async function fetchAndInstallCatalog(forceNetwork: boolean): Promise<LoadedCata
   const manifest = validateCatalogManifest(await manifestResponse.json());
   const catalogUrl = new URL(manifest.catalogUrl, manifestUrl);
 
-  if (catalogUrl.origin !== window.location.origin || !catalogUrl.pathname.startsWith(baseUrl.pathname)) {
+  if (
+    catalogUrl.origin !== window.location.origin ||
+    !catalogUrl.pathname.startsWith(baseUrl.pathname)
+  ) {
     throw new Error("Manifest wskazuje nieprawidłowy adres katalogu leków.");
   }
 
+  const validatedCatalog = readValidatedCatalog();
+  const hasMatchingReference = catalogsMatch(validatedCatalog, manifest);
+  const hasMatchingCachedResponse =
+    !forceReload &&
+    hasMatchingReference &&
+    (await hasCachedCatalogResponse(catalogUrl));
+
+  if (!hasMatchingCachedResponse) {
+    onDownloadRequired?.();
+  }
+
   const catalogResponse = await fetch(catalogUrl, {
-    cache: forceNetwork ? "reload" : "default"
+    cache: forceReload ? "reload" : "default"
   });
 
   if (!catalogResponse.ok) {
@@ -122,6 +192,7 @@ async function fetchAndInstallCatalog(forceNetwork: boolean): Promise<LoadedCata
 
   // Repozytorium podmieniamy dopiero po pobraniu i pełnej walidacji katalogu.
   installDrugCatalog(catalog);
+  saveValidatedCatalog(manifest);
   notifyServiceWorker(catalogUrl);
 
   return {
@@ -130,13 +201,13 @@ async function fetchAndInstallCatalog(forceNetwork: boolean): Promise<LoadedCata
   };
 }
 
-export function loadDrugCatalog(forceReload = false): Promise<LoadedCatalog> {
-  if (forceReload) {
+export function loadDrugCatalog(options: CatalogLoadOptions = {}): Promise<LoadedCatalog> {
+  if (options.forceReload) {
     activeLoad = null;
   }
 
   if (!activeLoad) {
-    activeLoad = fetchAndInstallCatalog(forceReload).catch((error: unknown) => {
+    activeLoad = fetchAndInstallCatalog(options).catch((error: unknown) => {
       activeLoad = null;
       throw error;
     });

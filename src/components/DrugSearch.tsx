@@ -7,7 +7,7 @@ interface DrugSearchProps {
   query?: string;
   onQueryChange?: (query: string) => void;
   onSelect?: (drug: Drug, matchedTradeName?: string) => void;
-  catalogStatus?: "loading" | "ready" | "error";
+  catalogStatus?: "checking" | "loading" | "ready" | "error";
   onRetryCatalog?: () => void;
 }
 
@@ -33,7 +33,7 @@ export function DrugSearch({
     [currentQuery, results]
   );
   const visibleResults = searchResults.slice(0, MAX_VISIBLE_RESULTS);
-  const isSearching = trimmedQuery.length > 0;
+  const isSearching = catalogStatus === "ready" && trimmedQuery.length > 0;
   const hasSearchQuery = trimmedQuery.length >= 2;
 
   useLayoutEffect(() => {
@@ -69,40 +69,58 @@ export function DrugSearch({
           <h1 id="drug-search-title">Rimedi</h1>
           <p className="searchTagline">Leki bez tajemnic</p>
         </div>
-        <label className="visuallyHidden" htmlFor="drug-search">
-          Nazwa handlowa lub substancja czynna
-        </label>
-        <div className="searchInputWrap">
-          <svg className="searchIcon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m21 21-4.35-4.35m2.35-5.65a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z" />
-          </svg>
-          <input
-            ref={inputRef}
-            id="drug-search"
-            type="search"
-            inputMode="search"
-            enterKeyHint="search"
-            className="minimalSearchInput"
-            value={currentQuery}
-            minLength={2}
-            autoComplete="off"
-            autoCapitalize="none"
-            spellCheck={false}
-            placeholder="Lek lub substancja czynna"
-            aria-describedby="search-feedback"
-            onChange={(event) => updateQuery(event.target.value)}
-          />
-          {currentQuery.length > 0 && (
-            <button type="button" className="clearSearchButton" aria-label="Wyczyść wyszukiwanie" onClick={clearQuery}>
-              <span aria-hidden="true">×</span>
-            </button>
-          )}
-        </div>
+        {catalogStatus !== "loading" && (
+          <>
+            <label className="visuallyHidden" htmlFor="drug-search">
+              Nazwa handlowa lub substancja czynna
+            </label>
+            <div className="searchInputWrap catalogSearchReady">
+              <svg className="searchIcon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m21 21-4.35-4.35m2.35-5.65a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z" />
+              </svg>
+              <input
+                ref={inputRef}
+                id="drug-search"
+                type="search"
+                inputMode="search"
+                enterKeyHint="search"
+                className="minimalSearchInput"
+                value={currentQuery}
+                minLength={2}
+                autoComplete="off"
+                autoCapitalize="none"
+                spellCheck={false}
+                placeholder="Lek lub substancja czynna"
+                aria-describedby="search-feedback"
+                onChange={(event) => updateQuery(event.target.value)}
+              />
+              {currentQuery.length > 0 && (
+                <button
+                  type="button"
+                  className="clearSearchButton"
+                  aria-label="Wyczyść wyszukiwanie"
+                  onClick={clearQuery}
+                >
+                  <span aria-hidden="true">×</span>
+                </button>
+              )}
+            </div>
+          </>
+        )}
       </div>
 
       <div className="searchResultsArea">
         <div id="search-feedback" className="minimalSearchFeedback" aria-live="polite">
-          {catalogStatus === "loading" && <p>Ładowanie bazy leków…</p>}
+          {catalogStatus === "loading" && (
+            <div className="catalogLoading" role="status" aria-label="Ładowanie bazy leków">
+              <span className="catalogLoadingDots" aria-hidden="true">
+                <span />
+                <span />
+                <span />
+              </span>
+              <p>Ładowanie bazy leków</p>
+            </div>
+          )}
           {catalogStatus === "error" && (
             <div className="catalogLoadError">
               <p>Nie udało się załadować bazy leków.</p>

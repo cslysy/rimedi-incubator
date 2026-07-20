@@ -2,7 +2,10 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import { DrugSearch } from "./components/DrugSearch";
 import { ProductSelector } from "./components/ProductSelector";
 import { drugRepository } from "./services/DrugRepository";
-import { loadDrugCatalog } from "./services/catalogLoader";
+import {
+  hasValidatedCatalogReference,
+  loadDrugCatalog
+} from "./services/catalogLoader";
 import type { Drug } from "./types";
 import {
   getNavigationState,
@@ -19,20 +22,31 @@ function findDrug(drugId: string | undefined): Drug | null {
   return drugRepository.getAllDrugs().find((drug) => drug.id === drugId) ?? null;
 }
 
-type CatalogStatus = "loading" | "ready" | "error";
+type CatalogStatus = "checking" | "loading" | "ready" | "error";
 
 export function App() {
   const [query, setQuery] = useState("");
   const [selectedDrug, setSelectedDrug] = useState<Drug | null>(null);
-  const [catalogStatus, setCatalogStatus] = useState<CatalogStatus>("loading");
+  const [catalogStatus, setCatalogStatus] = useState<CatalogStatus>(() =>
+    hasValidatedCatalogReference() ? "checking" : "loading"
+  );
   const [catalogLoadAttempt, setCatalogLoadAttempt] = useState(0);
 
   useEffect(() => {
     let active = true;
 
-    setCatalogStatus("loading");
+    setCatalogStatus(
+      catalogLoadAttempt === 0 && hasValidatedCatalogReference() ? "checking" : "loading"
+    );
 
-    void loadDrugCatalog(catalogLoadAttempt > 0)
+    void loadDrugCatalog({
+      forceReload: catalogLoadAttempt > 0,
+      onDownloadRequired: () => {
+        if (active) {
+          setCatalogStatus("loading");
+        }
+      }
+    })
       .then(() => {
         if (!active) {
           return;
