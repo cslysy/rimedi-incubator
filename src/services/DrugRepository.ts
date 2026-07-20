@@ -1,4 +1,3 @@
-import rplCatalog from "../data/rpl-drugs.json";
 import calculatorData from "../metadata/calculators.json";
 import productIndicationData from "../metadata/productIndications.json";
 import productMetadataData from "../metadata/productMetadata.json";
@@ -18,7 +17,7 @@ import type {
 import { getCompatibleCalculatorCodes } from "../utils/calculatorCompatibility";
 import { normalizeSearchText } from "../utils/search";
 
-type RawDrugProduct = Omit<
+export type RawDrugProduct = Omit<
   DrugProduct,
   "calculators" | "highRisk" | "sourceNote" | "updatedAt" | "therapeuticIndications"
 > &
@@ -26,15 +25,14 @@ type RawDrugProduct = Omit<
     Pick<DrugProduct, "calculators" | "highRisk" | "sourceNote" | "updatedAt" | "therapeuticIndications">
   >;
 
-interface RawDrug extends Omit<Drug, "products"> {
+export interface RawDrug extends Omit<Drug, "products"> {
   products: RawDrugProduct[];
 }
 
-interface RawDrugCatalog {
+export interface RawDrugCatalog {
   drugs: RawDrug[];
 }
 
-const rawDrugCatalog = rplCatalog as RawDrugCatalog;
 const calculators = calculatorData as CalculatorDefinition[];
 const productIndications = productIndicationData as ProductIndicationMetadata[];
 const productMetadata = productMetadataData as ProductMetadata[];
@@ -85,7 +83,7 @@ function getProductIndications(productId: string): ProductIndication | undefined
   return publicIndication;
 }
 
-function hydrateDrugCatalog(rawCatalog: RawDrugCatalog): Drug[] {
+export function hydrateDrugCatalog(rawCatalog: RawDrugCatalog): Drug[] {
   return rawCatalog.drugs.map((drug) => ({
     ...drug,
     products: drug.products.map((product) => {
@@ -107,7 +105,7 @@ export class DrugRepository {
   private readonly drugs: Drug[];
   private readonly searchIndex: DrugSearchIndexEntry[];
 
-  public constructor(drugs: Drug[] = hydrateDrugCatalog(rawDrugCatalog)) {
+  public constructor(drugs: Drug[] = []) {
     this.drugs = drugs;
     this.searchIndex = drugs.map((drug) => ({
       drug,
@@ -188,4 +186,14 @@ export class DrugRepository {
   }
 }
 
-export const drugRepository = new DrugRepository();
+export let drugRepository = new DrugRepository();
+
+export function createDrugRepositoryFromCatalog(rawCatalog: RawDrugCatalog): DrugRepository {
+  return new DrugRepository(hydrateDrugCatalog(rawCatalog));
+}
+
+export function installDrugCatalog(rawCatalog: RawDrugCatalog): DrugRepository {
+  const nextRepository = createDrugRepositoryFromCatalog(rawCatalog);
+  drugRepository = nextRepository;
+  return nextRepository;
+}

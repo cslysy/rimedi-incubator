@@ -7,16 +7,27 @@ interface DrugSearchProps {
   query?: string;
   onQueryChange?: (query: string) => void;
   onSelect?: (drug: Drug, matchedTradeName?: string) => void;
+  catalogStatus?: "loading" | "ready" | "error";
+  onRetryCatalog?: () => void;
 }
 
 const MAX_VISIBLE_RESULTS = 50;
 
-export function DrugSearch({ query, onQueryChange, onSelect }: DrugSearchProps = {}) {
+export function DrugSearch({
+  query,
+  onQueryChange,
+  onSelect,
+  catalogStatus = "ready",
+  onRetryCatalog
+}: DrugSearchProps = {}) {
   const [internalQuery, setInternalQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const currentQuery = query ?? internalQuery;
   const trimmedQuery = currentQuery.trim();
-  const results = useMemo(() => drugRepository.searchDrugs(currentQuery), [currentQuery]);
+  const results = useMemo(
+    () => (catalogStatus === "ready" ? drugRepository.searchDrugs(currentQuery) : []),
+    [catalogStatus, currentQuery]
+  );
   const searchResults = useMemo(
     () => buildDrugSearchResults(results, currentQuery),
     [currentQuery, results]
@@ -91,8 +102,23 @@ export function DrugSearch({ query, onQueryChange, onSelect }: DrugSearchProps =
 
       <div className="searchResultsArea">
         <div id="search-feedback" className="minimalSearchFeedback" aria-live="polite">
-          {trimmedQuery.length === 1 && <p>Wpisz jeszcze jeden znak</p>}
-          {hasSearchQuery && results.length === 0 && <p>Brak wyników</p>}
+          {catalogStatus === "loading" && <p>Ładowanie bazy leków…</p>}
+          {catalogStatus === "error" && (
+            <div className="catalogLoadError">
+              <p>Nie udało się załadować bazy leków.</p>
+              {onRetryCatalog && (
+                <button type="button" onClick={onRetryCatalog}>
+                  Spróbuj ponownie
+                </button>
+              )}
+            </div>
+          )}
+          {catalogStatus === "ready" && trimmedQuery.length === 1 && (
+            <p>Wpisz jeszcze jeden znak</p>
+          )}
+          {catalogStatus === "ready" && hasSearchQuery && results.length === 0 && (
+            <p>Brak wyników</p>
+          )}
         </div>
 
         {visibleResults.length > 0 && (

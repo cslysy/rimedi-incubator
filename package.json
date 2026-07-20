@@ -5,8 +5,8 @@
   "packageManager": "pnpm@11.7.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev": "node tools/catalog/build-catalog-assets.mjs && vite",
+    "build": "node tools/catalog/build-catalog-assets.mjs && tsc -b && vite build",
     "import:rpl": "node --use-system-ca tools/rpl-importer/import.mjs",
     "preview": "vite preview",
     "test": "vitest run",

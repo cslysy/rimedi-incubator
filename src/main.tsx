@@ -67,7 +67,7 @@ function registerOfflineShell(): void {
   if (!offlineShellRegistrationStarted && "serviceWorker" in navigator && import.meta.env.PROD) {
     offlineShellRegistrationStarted = true;
     navigator.serviceWorker
-      .register(`${import.meta.env.BASE_URL}sw.js?v=online-gated-1`)
+      .register(`${import.meta.env.BASE_URL}sw.js?v=online-gated-2`)
       .catch(() => undefined);
   }
 }

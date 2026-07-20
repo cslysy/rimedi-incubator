@@ -657,6 +657,24 @@ p {
   margin: 12px 0 0;
 }
 
+.catalogLoadError button {
+  min-height: 40px;
+  margin-top: 10px;
+  padding: 8px 16px;
+  border: 0;
+  border-radius: 999px;
+  color: #fff;
+  background: #0f827c;
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.catalogLoadError button:focus-visible {
+  outline: 3px solid rgb(15 130 124 / 0.25);
+  outline-offset: 2px;
+}
+
 .minimalResultList {
   margin-top: 8px;
   border-top: 1px solid #edf0f4;

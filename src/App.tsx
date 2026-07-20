@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import { DrugSearch } from "./components/DrugSearch";
 import { ProductSelector } from "./components/ProductSelector";
 import { drugRepository } from "./services/DrugRepository";
+import { loadDrugCatalog } from "./services/catalogLoader";
 import type { Drug } from "./types";
 import {
   getNavigationState,
@@ -18,16 +19,42 @@ function findDrug(drugId: string | undefined): Drug | null {
   return drugRepository.getAllDrugs().find((drug) => drug.id === drugId) ?? null;
 }
 
-function getInitialDrug(): Drug | null {
-  const navigation = getNavigationState();
-  return navigation?.level === "drug" || navigation?.level === "product"
-    ? findDrug(navigation.drugId)
-    : null;
-}
+type CatalogStatus = "loading" | "ready" | "error";
 
 export function App() {
   const [query, setQuery] = useState("");
-  const [selectedDrug, setSelectedDrug] = useState<Drug | null>(getInitialDrug);
+  const [selectedDrug, setSelectedDrug] = useState<Drug | null>(null);
+  const [catalogStatus, setCatalogStatus] = useState<CatalogStatus>("loading");
+  const [catalogLoadAttempt, setCatalogLoadAttempt] = useState(0);
+
+  useEffect(() => {
+    let active = true;
+
+    setCatalogStatus("loading");
+
+    void loadDrugCatalog(catalogLoadAttempt > 0)
+      .then(() => {
+        if (!active) {
+          return;
+        }
+
+        setCatalogStatus("ready");
+        const navigation = getNavigationState();
+
+        if (navigation?.level === "drug" || navigation?.level === "product") {
+          setSelectedDrug(findDrug(navigation.drugId));
+        }
+      })
+      .catch(() => {
+        if (active) {
+          setCatalogStatus("error");
+        }
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [catalogLoadAttempt]);
 
   useEffect(() => {
     const previousScrollRestoration = window.history.scrollRestoration;
@@ -151,7 +178,13 @@ export function App() {
           />
         </>
       ) : (
-        <DrugSearch query={query} onQueryChange={setQuery} onSelect={selectDrug} />
+        <DrugSearch
+          query={query}
+          onQueryChange={setQuery}
+          onSelect={selectDrug}
+          catalogStatus={catalogStatus}
+          onRetryCatalog={() => setCatalogLoadAttempt((attempt) => attempt + 1)}
+        />
       )}
     </main>
   );

@@ -1,6 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { drugRepository, DrugRepository } from "../services/DrugRepository";
+import rawCatalog from "../data/rpl-drugs.json";
+import {
+  createDrugRepositoryFromCatalog,
+  DrugRepository,
+  type RawDrugCatalog
+} from "../services/DrugRepository";
 import type { Drug } from "../types";
+
+const catalogRepository = createDrugRepositoryFromCatalog(rawCatalog as RawDrugCatalog);
 
 const sampleDrugs: Drug[] = [
   {
@@ -70,21 +77,21 @@ describe("DrugRepository", () => {
   });
 
   it("składa dane produktu z metadanymi aplikacji", () => {
-    const product = drugRepository.getProductById("rpl-product-100000014");
+    const product = catalogRepository.getProductById("rpl-product-100000014");
 
     expect(product?.tradeName).toBe("Zoledronic acid Fresenius Kabi");
     expect(product?.activeSubstance).toBe("Acidum zoledronicum");
   });
 
   it("filtruje kalkulatory zależnie od drogi podania", () => {
-    const product = drugRepository.getProductById("rpl-product-100000014");
+    const product = catalogRepository.getProductById("rpl-product-100000014");
 
     expect(product).toBeDefined();
     if (!product) {
       return;
     }
 
-    const productCalculators = drugRepository
+    const productCalculators = catalogRepository
       .getCalculatorsForProduct(product, "IV")
       .map((calculator) => calculator.code);
 
@@ -101,7 +108,7 @@ describe("DrugRepository", () => {
 
 describe("RPL product metadata", () => {
   it("returns the manually assigned calculator for Apap", () => {
-    const product = drugRepository.getProductById("rpl-product-100006494");
+    const product = catalogRepository.getProductById("rpl-product-100006494");
 
     expect(product).toBeDefined();
     if (!product) {
@@ -109,12 +116,12 @@ describe("RPL product metadata", () => {
     }
 
     expect(
-      drugRepository.getCalculatorsForProduct(product, "PO").map((calculator) => calculator.code)
+      catalogRepository.getCalculatorsForProduct(product, "PO").map((calculator) => calculator.code)
     ).toEqual(["MG_PER_KG_TO_MG"]);
   });
 
   it("returns verified indications for Forxiga products", () => {
-    const indications = drugRepository.getIndicationsForProduct("rpl-product-100279424");
+    const indications = catalogRepository.getIndicationsForProduct("rpl-product-100279424");
 
     expect(indications?.tradeName).toBe("Forxiga");
     expect(indications?.conditionTags).toEqual([
@@ -125,7 +132,7 @@ describe("RPL product metadata", () => {
   });
 
   it("returns verified indications for Captopril products", () => {
-    const indications = drugRepository.getIndicationsForProduct("rpl-product-100201735");
+    const indications = catalogRepository.getIndicationsForProduct("rpl-product-100201735");
 
     expect(indications?.activeSubstance).toBe("Captoprilum");
     expect(indications?.conditionTags).toContain("nadciśnienie tętnicze");
